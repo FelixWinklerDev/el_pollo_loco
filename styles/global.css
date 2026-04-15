@@ -30,6 +30,9 @@ footer {
   width: 100%;
   margin-top: auto;
   background-color: #333;
+  background-image: url(../assets/5_background/layers/2_second_layer/full.png);
+  background-size: cover;
+  background-position: center;
 }
 
 p {
