@@ -1,0 +1,53 @@
+body {
+  margin: 0;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  font-size: 62.5%;
+}
+
+h1 {
+  font-family: "PlaywriteMX-Regular", sans-serif;
+  font-size: 4rem;
+  color: brown;
+  text-align: center;
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+
+canvas {
+  background-color: black;
+  height: 500px;
+  width: 800px;
+}
+
+footer {
+  height: 85px;
+  width: 100%;
+  margin-top: auto;
+  background-color: #333;
+}
+
+p {
+  font-family: "Roboto-Regular", sans-serif;
+  font-size: 1.6rem;
+  color: white;
+  text-align: center;
+}
+
+a {
+  font-family: "Roboto-Regular", sans-serif;
+  font-size: 1.6rem;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+}
+
+a:hover {
+  color: brown;
+  text-decoration: underline;
+}
