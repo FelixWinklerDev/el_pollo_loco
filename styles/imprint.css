@@ -1,0 +1,95 @@
+.imprint-page {
+  *,
+  body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  h1 {
+    color: black;
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-size: 3.2rem;
+    font-family: "Roboto-Regular", sans-serif;
+    color: black;
+    margin-left: 10px;
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-size: 2.4rem;
+    font-family: "Roboto-Regular", sans-serif;
+    color: black;
+    margin-left: 10px;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1.6rem;
+    font-family: "Roboto-Regular", sans-serif;
+    color: black;
+    margin-left: 10px;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  a {
+    font-family: "Roboto-Regular", sans-serif;
+    color: brown;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  a:hover {
+    color: rgb(205, 55, 55);
+    text-decoration: underline;
+  }
+
+  ul,
+  li {
+    color: black;
+    font-size: 1.6rem;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  footer {
+    height: 100px;
+    flex-shrink: 0;
+  }
+
+  .container {
+    padding-top: 50px;
+    margin-left: 10px;
+  }
+
+  .epilogue {
+    padding-bottom: 30px;
+  }
+
+  .seal {
+    padding-bottom: 30px;
+    margin-left: 10px;
+  }
+}
+
+@media (max-width: 880px) {
+  .br-point {
+    overflow-wrap: break-word;
+  }
+}
