@@ -1,7 +1,12 @@
-class MoveableObject{
+class MoveableObject {
   x = 120;
-  y = 400;
-  img = "./assets/2_character_pepe_/2_walk/W-21.png";
+  y = 20;
+  img;
+
+  loadImage(path) {
+    this.img = new Image();
+    this.img.src = path;
+  }
 
   moveLeft() {
     console.log("move left");
