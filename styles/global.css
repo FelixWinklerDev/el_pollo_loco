@@ -26,14 +26,14 @@ main {
 
 canvas {
   background-color: black;
-  height: 500px;
-  width: 800px;
+  height: 600px;
+  width: 1000px;
+  margin-bottom: 55px;
 }
 
 footer {
   height: 85px;
   width: 100%;
-  margin-top: auto;
   background-color: #333;
   background-image: url(../assets/5_background/layers/2_second_layer/full.png);
   background-size: cover;
