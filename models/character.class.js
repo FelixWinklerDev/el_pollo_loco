@@ -26,16 +26,16 @@ class Character extends MoveableObject {
 
   animate() {
     setInterval(() => {
-      if (this.world.keyboard.D) {
+      if (this.world.keyboard.D && this.x < this.world.level.level_end_x) {
         this.x += this.speed;
         this.mirrored = false;
       }
 
-      if (this.world.keyboard.A) {
+      if (this.world.keyboard.A && this.x > 0) {
         this.x -= this.speed;
         this.mirrored = true;
       }
-      this.world.camera_x = -this.x;
+      this.world.camera_x = -this.x - 1;
     }, 1000 / 60);
   }
 

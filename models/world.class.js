@@ -1,44 +1,6 @@
 class World {
   character = new Character();
-  enemies = [
-    new Chicken(),
-    new Chicken(),
-    new Chicken(),
-    new Chicken(),
-    new Chicken(),
-  ];
-  cloud = [
-    new Cloud("./assets/5_background/layers/4_clouds/1.png"),
-    new Cloud("./assets/5_background/layers/4_clouds/2.png"),
-    new Cloud("./assets/5_background/layers/4_clouds/1.png"),
-    new Cloud("./assets/5_background/layers/4_clouds/2.png"),
-    new Cloud("./assets/5_background/layers/4_clouds/1.png"),
-    new Cloud("./assets/5_background/layers/4_clouds/2.png"),
-    new Cloud("./assets/5_background/layers/4_clouds/1.png"),
-    new Cloud("./assets/5_background/layers/4_clouds/2.png"),
-  ];
-  background = [
-    new BackgroundObject("./assets/5_background/layers/air.png", 0),
-    new BackgroundObject("./assets/5_background/layers/3_third_layer/1.png", 0),
-    new BackgroundObject(
-      "./assets/5_background/layers/2_second_layer/1.png",
-      0,
-    ),
-    new BackgroundObject("./assets/5_background/layers/1_first_layer/1.png", 0),
-    new BackgroundObject("./assets/5_background/layers/air.png", 719),
-    new BackgroundObject(
-      "./assets/5_background/layers/3_third_layer/2.png",
-      719,
-    ),
-    new BackgroundObject(
-      "./assets/5_background/layers/2_second_layer/2.png",
-      719,
-    ),
-    new BackgroundObject(
-      "./assets/5_background/layers/1_first_layer/2.png",
-      719,
-    ),
-  ];
+  level = level1;
   canvas;
   ctx;
   keyboard;
@@ -61,10 +23,10 @@ class World {
 
     this.ctx.translate(this.camera_x, 0);
 
-    this.addObjectsToMap(this.background);
-    this.addObjectsToMap(this.cloud);
+    this.addObjectsToMap(this.level.background);
+    this.addObjectsToMap(this.level.cloud);
     this.addToMap(this.character);
-    this.addObjectsToMap(this.enemies);
+    this.addObjectsToMap(this.level.enemies);
 
     this.ctx.translate(-this.camera_x, 0);
 
