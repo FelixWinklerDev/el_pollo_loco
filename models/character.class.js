@@ -42,10 +42,7 @@ class Character extends MoveableObject {
   animatedMoveRight() {
     setInterval(() => {
       if (this.world.keyboard.D || this.world.keyboard.A) {
-        let i = this.currentImage % this.animatedMove.length;
-        let path = this.animatedMove[i];
-        this.img = this.imageCache[path];
-        this.currentImage++;
+        this.playAnimation(this.animatedMove);
       }
     }, 115);
   }
