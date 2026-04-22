@@ -5,7 +5,7 @@ class Cloud extends MoveableObject {
   constructor(imagePath) {
     super();
     this.loadImage(imagePath);
-    this.x = 10 + Math.random() * 800;
+    this.x = 50 + Math.random() * 1000;
     this.y = 5 + Math.random() * 100;
     this.moveFrame();
   }
