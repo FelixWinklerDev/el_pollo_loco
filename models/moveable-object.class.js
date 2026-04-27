@@ -5,6 +5,21 @@ class MoveableObject {
   imageCache = {};
   speed = 0.1;
   mirrored = false;
+  speedY = 0;
+  acceleration = 1.5;
+
+  applyGravity() {
+    setInterval(() => {
+      if (this.isInAir() || this.speedY > 0) {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
+      }
+    }, 1000 / 25);
+  }
+
+  isInAir() {
+    return this.y < 140;
+  }
 
   loadImage(path) {
     this.img = new Image();
@@ -31,10 +46,24 @@ class MoveableObject {
     }, 1000 / 60);
   }
 
+  characterMoveLeft() {
+    this.x -= this.speed;
+    this.mirrored = true;
+  }
+
+  characterMoveRight() {
+    this.x += this.speed;
+    this.mirrored = false;
+  }
+
   playAnimation(image) {
     let i = this.currentImage % this.animatedMove.length;
     let path = image[i];
     this.img = this.imageCache[path];
     this.currentImage++;
+  }
+
+  jump() {
+    this.speedY = 20;
   }
 }
