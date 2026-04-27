@@ -66,4 +66,16 @@ class MoveableObject {
   jump() {
     this.speedY = 20;
   }
+
+  draw(ctx) {
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+  }
+
+  showHitbox(ctx) {
+    ctx.beginPath();
+    ctx.lineWidth = "4";
+    ctx.strokeStyle = "green";
+    ctx.rect(this.x, this.y, this.width, this.height);
+    ctx.stroke();
+  }
 }
