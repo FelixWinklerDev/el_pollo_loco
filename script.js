@@ -9,7 +9,7 @@ function init() {
 }
 
 window.addEventListener("keypress", (event) => {
-  console.log("key pressed", event);
+  "key pressed";
   if (event.code == "KeyA") {
     keyboard.A = true;
   }
@@ -25,7 +25,7 @@ window.addEventListener("keypress", (event) => {
 });
 
 window.addEventListener("keyup", (event) => {
-  console.log("key released", event);
+  "key released";
   if (event.code == "KeyA") {
     keyboard.A = false;
   }

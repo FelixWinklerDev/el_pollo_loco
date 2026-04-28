@@ -19,9 +19,11 @@ class Character extends MoveableObject {
     "./assets/2_character_pepe/3_jump/J-38.png",
     "./assets/2_character_pepe/3_jump/J-39.png",
   ];
+
   currentImage = 0;
   speed = 3.5;
   world;
+  jumpAnimationPlayed = false;
 
   constructor() {
     super();
@@ -56,11 +58,18 @@ class Character extends MoveableObject {
   animatedMoveRight() {
     setInterval(() => {
       if (this.isInAir()) {
-        this.playAnimation(this.animatedJump);
-      }
-
-      if (this.world.keyboard.D || this.world.keyboard.A) {
-        this.playAnimation(this.animatedMove);
+        if (!this.jumpAnimationPlayed) {
+          this.currentImage = 0;
+          this.jumpAnimationPlayed = true;
+        }
+        if (this.currentImage < this.animatedJump.length) {
+          this.playAnimation(this.animatedJump);
+        }
+      } else {
+        this.jumpAnimationPlayed = false;
+        if (this.world.keyboard.D || this.world.keyboard.A) {
+          this.playAnimation(this.animatedMove);
+        }
       }
     }, 115);
   }

@@ -7,6 +7,7 @@ class MoveableObject {
   mirrored = false;
   speedY = 0;
   acceleration = 1.5;
+  health = 100;
 
   applyGravity() {
     setInterval(() => {
@@ -56,9 +57,9 @@ class MoveableObject {
     this.mirrored = false;
   }
 
-  playAnimation(image) {
-    let i = this.currentImage % this.animatedMove.length;
-    let path = image[i];
+  playAnimation(images) {
+    let i = this.currentImage % images.length;
+    let path = images[i];
     this.img = this.imageCache[path];
     this.currentImage++;
   }

@@ -23,7 +23,7 @@ class World {
     setInterval(() => {
       this.level.enemies.forEach((enemy) => {
         if (this.character.collidingHitbox(enemy)) {
-          console.log(enemy, "Dealt -1 HP on Character");
+          this.character.health -= 10;
         }
       });
     }, 200);
