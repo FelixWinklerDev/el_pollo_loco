@@ -94,7 +94,7 @@ class MoveableObject {
   getDamage() {
     let timepassed = new Date().getTime() - this.lastHit;
     timepassed = timepassed / 1000;
-    return timepassed < 5;
+    return timepassed < 1.2;
   }
 
   isDead() {
