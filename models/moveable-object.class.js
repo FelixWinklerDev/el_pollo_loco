@@ -8,6 +8,7 @@ class MoveableObject {
   speedY = 0;
   acceleration = 1.5;
   health = 100;
+  lastHit = 0;
 
   applyGravity() {
     setInterval(() => {
@@ -79,6 +80,25 @@ class MoveableObject {
       this.x < mo.x &&
       this.y < mo.y + mo.height
     );
+  }
+
+  hit() {
+    this.health -= 10;
+    if (this.health < 0) {
+      this.health = 0;
+    } else {
+      this.lastHit = new Date().getTime();
+    }
+  }
+
+  getDamage() {
+    let timepassed = new Date().getTime() - this.lastHit;
+    timepassed = timepassed / 1000;
+    return timepassed < 5;
+  }
+
+  isDead() {
+    return this.health == 0;
   }
 
   showHitbox(ctx) {

@@ -20,6 +20,22 @@ class Character extends MoveableObject {
     "./assets/2_character_pepe/3_jump/J-39.png",
   ];
 
+  animatedDeath = [
+    "./assets/2_character_pepe/5_dead/D-51.png",
+    "./assets/2_character_pepe/5_dead/D-52.png",
+    "./assets/2_character_pepe/5_dead/D-53.png",
+    "./assets/2_character_pepe/5_dead/D-54.png",
+    "./assets/2_character_pepe/5_dead/D-55.png",
+    "./assets/2_character_pepe/5_dead/D-56.png",
+    "./assets/2_character_pepe/5_dead/D-57.png",
+  ];
+
+  animatedDamage = [
+    "./assets/2_character_pepe/4_hurt/H-41.png",
+    "./assets/2_character_pepe/4_hurt/H-42.png",
+    "./assets/2_character_pepe/4_hurt/H-43.png",
+  ];
+
   currentImage = 0;
   speed = 3.5;
   world;
@@ -30,6 +46,8 @@ class Character extends MoveableObject {
     this.loadImage("./assets/2_character_pepe/2_walk/W-21.png");
     this.loadImages(this.animatedMove);
     this.loadImages(this.animatedJump);
+    this.loadImages(this.animatedDeath);
+    this.loadImages(this.animatedDamage);
 
     this.x = 10;
     this.y = 140;
@@ -42,13 +60,18 @@ class Character extends MoveableObject {
 
   animate() {
     setInterval(() => {
-      if (this.world.keyboard.D && this.x < this.world.level.level_end_x) {
+      if (this.isDead()) {
+        this.playAnimation(this.animatedDeath);
+      } else if (this.getDamage()) {
+        this.playAnimation(this.animatedDamage);
+      } else if (
+        this.world.keyboard.D &&
+        this.x < this.world.level.level_end_x
+      ) {
         this.characterMoveRight();
-      }
-      if (this.world.keyboard.W && !this.isInAir()) {
+      } else if (this.world.keyboard.W && !this.isInAir()) {
         this.jump();
-      }
-      if (this.world.keyboard.A && this.x > 0) {
+      } else if (this.world.keyboard.A && this.x > 0) {
         this.characterMoveLeft();
       }
       this.world.camera_x = -this.x - 1;

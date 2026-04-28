@@ -64,5 +64,18 @@ const level1 = new Level(
       "./assets/5_background/layers/1_first_layer/2.png",
       2157,
     ),
+    new BackgroundObject("./assets/5_background/layers/air.png", 2876),
+    new BackgroundObject(
+      "./assets/5_background/layers/3_third_layer/1.png",
+      2876,
+    ),
+    new BackgroundObject(
+      "./assets/5_background/layers/2_second_layer/1.png",
+      2876,
+    ),
+    new BackgroundObject(
+      "./assets/5_background/layers/1_first_layer/1.png",
+      2876,
+    ),
   ],
 );
