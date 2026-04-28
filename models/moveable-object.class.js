@@ -71,11 +71,22 @@ class MoveableObject {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
+  collidingHitbox(mo) {
+    return (
+      this.x + this.width > mo.x &&
+      this.y + this.height > mo.y &&
+      this.x < mo.x &&
+      this.y < mo.y + mo.height
+    );
+  }
+
   showHitbox(ctx) {
-    ctx.beginPath();
-    ctx.lineWidth = "4";
-    ctx.strokeStyle = "green";
-    ctx.rect(this.x, this.y, this.width, this.height);
-    ctx.stroke();
+    if (this instanceof Character || this instanceof Chicken) {
+      ctx.beginPath();
+      ctx.lineWidth = "4";
+      ctx.strokeStyle = "green";
+      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.stroke();
+    }
   }
 }

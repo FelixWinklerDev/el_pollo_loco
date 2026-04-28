@@ -12,10 +12,21 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
+    this.checkCollision();
   }
 
   setWorld() {
     this.character.world = this;
+  }
+
+  checkCollision() {
+    setInterval(() => {
+      this.level.enemies.forEach((enemy) => {
+        if (this.character.collidingHitbox(enemy)) {
+          console.log(enemy, "Dealt -1 HP on Character");
+        }
+      });
+    }, 200);
   }
 
   draw() {
