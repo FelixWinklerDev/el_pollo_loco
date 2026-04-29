@@ -1,4 +1,4 @@
-class Character extends MoveableObject {
+class Character extends ColidableObject {
   animateIdle = [
     "./assets/2_character_pepe/1_idle/idle/I-1.png",
     "./assets/2_character_pepe/1_idle/idle/I-2.png",
@@ -62,11 +62,17 @@ class Character extends MoveableObject {
   ];
 
   currentImage = 0;
-  speed = 3.5;
+  speed = 6.5;
   world;
   jumpAnimationPlayed = false;
   deathAnimationPlayed = false;
   deathSequenceStarted = false;
+  offset = {
+    top: 120,
+    bottom: 10,
+    left: 70,
+    right: 70,
+  };
 
   constructor() {
     super();

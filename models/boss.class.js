@@ -1,4 +1,4 @@
-class Boss extends MoveableObject {
+class Boss extends ColidableObject {
   height = 425;
   width = 300;
   y = 45;
@@ -14,7 +14,12 @@ class Boss extends MoveableObject {
     "./assets/4_enemie_boss_chicken/2_alert/G12.png",
   ];
   currentImage = 0;
-
+  offset = {
+    top: 60,
+    bottom: 10,
+    left: 10,
+    right: 10,
+  };
   constructor() {
     super().loadImage(this.animatedMove[0]);
     this.loadImages(this.animatedMove);

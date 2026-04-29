@@ -56,7 +56,9 @@ class World {
       mo.x = mo.x * -1;
     }
     mo.draw(this.ctx);
-    mo.showHitbox(this.ctx);
+    if (mo.showHitbox) {
+      mo.showHitbox(this.ctx);
+    }
     if (mo.mirrored) {
       mo.x = mo.x * -1;
       this.ctx.restore();
