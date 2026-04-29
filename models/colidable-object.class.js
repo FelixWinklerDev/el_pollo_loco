@@ -47,7 +47,8 @@ class ColidableObject extends MoveableObject {
     if (
       this instanceof Character ||
       this instanceof Chicken ||
-      this instanceof Boss
+      this instanceof Boss ||
+      this instanceof Bottle
     ) {
       ctx.beginPath();
       ctx.lineWidth = "4";

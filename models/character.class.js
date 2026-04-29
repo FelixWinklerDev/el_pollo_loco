@@ -73,6 +73,7 @@ class Character extends ColidableObject {
     left: 70,
     right: 70,
   };
+  bottleAmount = 0;
 
   constructor() {
     super();
@@ -169,5 +170,12 @@ class Character extends ColidableObject {
         clearInterval(fallInterval);
       }
     }, 1000 / 25);
+  }
+
+  collectBottle() {
+    if (this.bottleAmount < 11) {
+      this.bottleAmount++;
+      console.log(this.bottleAmount);
+    }
   }
 }

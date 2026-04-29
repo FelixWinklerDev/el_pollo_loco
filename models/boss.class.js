@@ -17,7 +17,7 @@ class Boss extends ColidableObject {
   offset = {
     top: 60,
     bottom: 10,
-    left: 10,
+    left: 50,
     right: 10,
   };
   constructor() {

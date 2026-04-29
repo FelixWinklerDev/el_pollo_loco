@@ -5,6 +5,8 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
+  statusBar = new Healthbar();
+  bottleCounter = new BottleCounter();
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -13,6 +15,7 @@ class World {
     this.draw();
     this.setWorld();
     this.checkCollision();
+    this.checkBottleCollision();
   }
 
   setWorld() {
@@ -24,10 +27,22 @@ class World {
       this.level.enemies.forEach((enemy) => {
         if (this.character.collidingHitbox(enemy)) {
           this.character.hit();
-          console.log("health:", this.character.health);
+          this.statusBar.setPercentage(this.character.health);
         }
       });
     }, 200);
+  }
+
+  checkBottleCollision() {
+    setInterval(() => {
+      this.level.bottles.forEach((bottle, index) => {
+        if (this.character.collidingHitbox(bottle)) {
+          this.character.collectBottle();
+          this.level.bottles.splice(index, 1);
+          this.bottleCounter.setBottles(this.character.bottleAmount);
+        }
+      });
+    }, 50);
   }
 
   draw() {
@@ -37,9 +52,15 @@ class World {
 
     this.addObjectsToMap(this.level.background);
     this.addObjectsToMap(this.level.cloud);
+    this.ctx.translate(-this.camera_x, 0);
+    // ---------- Space for fixed Objects ----------
+    this.addToMap(this.statusBar);
+    this.addToMap(this.bottleCounter);
+    // ---------- Back to normal -------------------
+    this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
-
+    this.addObjectsToMap(this.level.bottles);
     this.ctx.translate(-this.camera_x, 0);
 
     let self = this;
