@@ -2,6 +2,9 @@ class Chicken extends ColidableObject {
   height = 100;
   width = 80;
   y = 340;
+  energy = 10;
+  isDead = false;
+
   animatedMove = [
     "./assets/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
     "./assets/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
@@ -22,7 +25,18 @@ class Chicken extends ColidableObject {
   enemyMoveAnimation() {
     this.moveLeft();
     setInterval(() => {
-      this.playAnimation(this.animatedMove);
+      if (this.energy > 0) {
+        this.playAnimation(this.animatedMove);
+      }
     }, 200);
+  }
+
+  hit() {
+    this.speed = 0;
+    this.energy = 0;
+    this.loadImage("./assets/3_enemies_chicken/chicken_normal/2_dead/dead.png");
+    setTimeout(() => {
+      this.isDead = true;
+    }, 500);
   }
 }

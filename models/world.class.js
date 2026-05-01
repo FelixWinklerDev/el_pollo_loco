@@ -23,31 +23,71 @@ class World {
   }
 
   runChecks() {
-    this.checkCollision();
-    this.checkBottleCollision();
+    setInterval(() => {
+      this.checkCollision();
+      this.checkBottleCollision();
+      this.checkEnemyCollisions();
+      this.checkThrowItemCollisions();
+    }, 100);
   }
 
   checkCollision() {
-    setInterval(() => {
-      this.level.enemies.forEach((enemy) => {
-        if (this.character.collidingHitbox(enemy)) {
-          this.character.hit();
-          this.statusBar.setPercentage(this.character.health);
-        }
-      });
-    }, 200);
+    this.level.enemies.forEach((enemy, index) => {
+      if (this.character.collidingHitbox(enemy) && enemy.energy > 0) {
+        this.character.hit();
+        this.statusBar.setPercentage(this.character.health);
+      }
+      if (enemy.isDead) {
+        this.level.enemies.splice(index, 1);
+      }
+    });
   }
 
   checkBottleCollision() {
-    setInterval(() => {
-      this.level.bottles.forEach((bottle, index) => {
-        if (this.character.collidingHitbox(bottle)) {
-          this.character.collectBottle();
-          this.level.bottles.splice(index, 1);
-          this.bottleCounter.setBottles(this.character.bottleAmount);
+    this.level.bottles.forEach((bottle, index) => {
+      if (this.character.collidingHitbox(bottle)) {
+        this.character.collectBottle();
+        this.level.bottles.splice(index, 1);
+        this.bottleCounter.setBottles(this.character.bottleAmount);
+      }
+    });
+  }
+
+  checkThrowItemCollisions() {
+    this.throwableObjects.forEach((bottle) => {
+      this.level.enemies.forEach((enemy) => {
+        if (enemy.energy > 0 && bottle.collidingHitbox(enemy)) {
+          this.bottleHit(enemy, bottle);
         }
       });
-    }, 50);
+    });
+  }
+
+  checkEnemyCollisions() {
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.collidingHitbox(enemy) && enemy.energy > 0) {
+        this.character.hit();
+        this.statusBar.setPercentage(this.character.health);
+      }
+    });
+  }
+
+  bottleHit(enemy, bottle) {
+    if (enemy instanceof Boss) {
+      enemy.hit(20);
+    } else {
+      enemy.hit(10);
+    }
+    this.removeThrowableObject(bottle);
+  }
+
+  removeThrowableObject(bottle) {
+    setTimeout(() => {
+      let index = this.throwableObjects.indexOf(bottle);
+      if (index !== -1) {
+        this.throwableObjects.splice(index, 1);
+      }
+    });
   }
 
   draw() {
