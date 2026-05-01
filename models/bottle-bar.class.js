@@ -10,6 +10,13 @@ class BottleCounter extends Statusbar {
     this.loadImage("./assets/6_salsa_bottle/salsa_bottle.png");
   }
 
+  draw(ctx) {
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    ctx.font = "32px Arial";
+    ctx.fillStyle = "white";
+    ctx.fillText(this.bottles, this.x + 50, this.y + 39); // Position der Zahl
+  }
+
   setBottles(amount) {
     this.bottles = amount;
   }

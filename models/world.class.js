@@ -7,6 +7,7 @@ class World {
   camera_x = 0;
   statusBar = new Healthbar();
   bottleCounter = new BottleCounter();
+  throwableObjects = [];
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -14,12 +15,16 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
-    this.checkCollision();
-    this.checkBottleCollision();
+    this.runChecks();
   }
 
   setWorld() {
     this.character.world = this;
+  }
+
+  runChecks() {
+    this.checkCollision();
+    this.checkBottleCollision();
   }
 
   checkCollision() {
@@ -61,6 +66,7 @@ class World {
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.bottles);
+    this.addObjectsToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
 
     let self = this;

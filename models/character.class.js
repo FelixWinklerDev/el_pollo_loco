@@ -74,10 +74,11 @@ class Character extends ColidableObject {
     right: 70,
   };
   bottleAmount = 0;
+  lastThrow = 0;
 
   constructor() {
     super();
-    this.loadImage("./assets/2_character_pepe/2_walk/W-21.png");
+    this.loadImage("./assets/2_character_pepe/1_idle/idle/I-1.png");
     this.loadImages(this.animatedMove);
     this.loadImages(this.animatedJump);
     this.loadImages(this.animatedDeath);
@@ -121,6 +122,9 @@ class Character extends ColidableObject {
       if (this.world.keyboard.W && !this.isInAir()) {
         this.jump();
       }
+      if (this.world.keyboard.E && this.bottleAmount > 0) {
+        this.throwBottle();
+      }
       if (this.world.keyboard.A && this.x > 0) {
         this.characterMoveLeft();
       }
@@ -149,7 +153,7 @@ class Character extends ColidableObject {
 
   playDeathSequence() {
     let deathFrame = 0;
-    const deathInterval = setInterval(() => {
+    let deathInterval = setInterval(() => {
       if (deathFrame < this.animatedDeath.length) {
         this.playAnimation(this.animatedDeath);
         deathFrame++;
@@ -162,7 +166,7 @@ class Character extends ColidableObject {
 
   deathJumpUp() {
     this.speedY = 25;
-    const fallInterval = setInterval(() => {
+    let fallInterval = setInterval(() => {
       this.y -= this.speedY;
       this.speedY -= 1.5;
       if (this.y > 500) {
@@ -173,9 +177,22 @@ class Character extends ColidableObject {
   }
 
   collectBottle() {
-    if (this.bottleAmount < 11) {
+    if (this.bottleAmount < 10) {
       this.bottleAmount++;
       console.log(this.bottleAmount);
     }
+  }
+
+  throwBottle() {
+    let bottle = new ThrowableObject(this.x + 100, this.y + 200);
+    if (this.characterMoveLeft) {
+      bottle.x = this.x;
+      bottle.speedX -= -10;
+    } else {
+      bottle.speedX += 10;
+    }
+    this.world.throwableObjects.push(bottle);
+    this.bottleAmount--;
+    this.world.bottleCounter.setBottles(this.bottleAmount);
   }
 }

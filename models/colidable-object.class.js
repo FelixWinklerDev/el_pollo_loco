@@ -90,12 +90,16 @@ class ColidableObject extends MoveableObject {
   }
 
   applyGravity() {
-    setInterval(() => {
-      if (this.isInAir() || this.speedY > 0) {
-        this.y -= this.speedY;
-        this.speedY -= this.acceleration;
-      }
-    }, 1000 / 25);
+    if (this instanceof ThrowableObject) {
+      return true;
+    } else {
+      setInterval(() => {
+        if (this.isInAir() || this.speedY > 0) {
+          this.y -= this.speedY;
+          this.speedY -= this.acceleration;
+        }
+      }, 1000 / 25);
+    }
   }
 
   isInAir() {

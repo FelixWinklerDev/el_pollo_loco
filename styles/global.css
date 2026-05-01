@@ -21,10 +21,20 @@ h1 {
 }
 
 main {
-  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  background-image: url(../assets/html-img/raniramli-desert-5396906_1920.jpg);
+  background-size: cover;
 }
 
 canvas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: black;
   margin-top: 55px;
 }
@@ -32,8 +42,7 @@ canvas {
 footer {
   height: 100px;
   width: 100%;
-  margin-top: 102px;
-  background-color: #333;
+  background-color: #eda05e;
   background-image: url(../assets/5_background/layers/2_second_layer/full.png);
   background-size: cover;
   background-position: center;
