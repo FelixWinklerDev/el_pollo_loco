@@ -7,10 +7,10 @@ class Boss extends ColidableObject {
   isDead = false;
 
   animatedWalk = [
-    "./assets/4_enemie_boss_chicken/4_hurt/G1.png",
-    "./assets/4_enemie_boss_chicken/4_hurt/G2.png",
-    "./assets/4_enemie_boss_chicken/4_hurt/G3.png",
-    "./assets/4_enemie_boss_chicken/4_hurt/G4.png",
+    "./assets/4_enemie_boss_chicken/1_walk/G1.png",
+    "./assets/4_enemie_boss_chicken/1_walk/G2.png",
+    "./assets/4_enemie_boss_chicken/1_walk/G3.png",
+    "./assets/4_enemie_boss_chicken/1_walk/G4.png",
   ];
 
   animatedAlert = [
@@ -25,14 +25,19 @@ class Boss extends ColidableObject {
   ];
 
   animatedAttack = [
-    "./assets/4_enemie_boss_chicken/4_hurt/G13.png",
-    "./assets/4_enemie_boss_chicken/4_hurt/G14.png",
-    "./assets/4_enemie_boss_chicken/4_hurt/G15.png",
-    "./assets/4_enemie_boss_chicken/4_hurt/G16.png",
-    "./assets/4_enemie_boss_chicken/4_hurt/G17.png",
-    "./assets/4_enemie_boss_chicken/4_hurt/G18.png",
-    "./assets/4_enemie_boss_chicken/4_hurt/G19.png",
-    "./assets/4_enemie_boss_chicken/4_hurt/G20.png",
+    "./assets/4_enemie_boss_chicken/3_attack/G13.png",
+    "./assets/4_enemie_boss_chicken/3_attack/G14.png",
+    "./assets/4_enemie_boss_chicken/3_attack/G15.png",
+    "./assets/4_enemie_boss_chicken/3_attack/G16.png",
+    "./assets/4_enemie_boss_chicken/3_attack/G17.png",
+    "./assets/4_enemie_boss_chicken/3_attack/G18.png",
+    "./assets/4_enemie_boss_chicken/3_attack/G19.png",
+    "./assets/4_enemie_boss_chicken/3_attack/G20.png",
+  ];
+
+  animatedFly = [
+    "./assets/4_enemie_boss_chicken/3_attack/G17.png",
+    "./assets/4_enemie_boss_chicken/3_attack/G18.png",
   ];
 
   animatedHurt = [
@@ -42,9 +47,9 @@ class Boss extends ColidableObject {
   ];
 
   animatedDead = [
-    "./assets/4_enemie_boss_chicken/4_hurt/G24.png",
-    "./assets/4_enemie_boss_chicken/4_hurt/G25.png",
-    "./assets/4_enemie_boss_chicken/4_hurt/G26.png",
+    "./assets/4_enemie_boss_chicken/5_dead/G24.png",
+    "./assets/4_enemie_boss_chicken/5_dead/G25.png",
+    "./assets/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
   currentImage = 0;
@@ -57,23 +62,32 @@ class Boss extends ColidableObject {
   constructor() {
     super().loadImage(this.animatedAlert[0]);
     this.loadImages(this.animatedAlert);
+    this.loadImages(this.animatedWalk);
+    this.loadImages(this.animatedAttack);
+    this.loadImages(this.animatedFly);
+    this.loadImages(this.animatedHurt);
+    this.loadImages(this.animatedDead);
     this.x = 2400;
     this.enemyMoveAnimation();
   }
 
   enemyMoveAnimation() {
     setInterval(() => {
-      this.playAnimation(this.animatedAlert);
+      if (this.isDead) {
+        this.playAnimation(this.animatedDead);
+      } else if (this.energy < 100) {
+        this.playAnimation(this.animatedHurt);
+      } else {
+        this.playAnimation(this.animatedAlert);
+      }
     }, 200);
   }
 
-  hit(damage) {
-    this.energy -= damage;
+  hit() {
+    this.energy -= 20;
     if (this.energy <= 0) {
       this.energy = 0;
-      this.die();
-    } else {
-      this.playAnimation(this.animatedHurt);
+      this.isDead = true;
     }
   }
 }
