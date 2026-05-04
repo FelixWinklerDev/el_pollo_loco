@@ -26,21 +26,44 @@ class World {
     setInterval(() => {
       this.checkCollision();
       this.checkBottleCollision();
-      this.checkEnemyCollisions();
       this.checkThrowItemCollisions();
+      this.handleCharacterEnemyCollision();
     }, 100);
   }
 
   checkCollision() {
     this.level.enemies.forEach((enemy, index) => {
       if (this.character.collidingHitbox(enemy) && enemy.energy > 0) {
-        this.character.hit();
-        this.statusBar.setPercentage(this.character.health);
+        this.handleCharacterEnemyCollision(enemy);
       }
       if (enemy.isDead) {
         this.level.enemies.splice(index, 1);
       }
     });
+  }
+
+  handleCharacterEnemyCollision(enemy) {
+    if (this.stomped(enemy)) {
+      enemy.hit();
+      this.character.speedY = 15;
+      return;
+    }
+    this.character.hit();
+    this.statusBar.setPercentage(this.character.health);
+  }
+
+  stomped(enemy) {
+    const charTop = this.character.y + this.character.offset.top;
+    const charBottom =
+      this.character.y + this.character.height - this.character.offset.bottom;
+    const enemyTop = enemy.y + enemy.offset.top;
+    const stompZone = enemyTop + 15;
+    return (
+      this.character.speedY < 0 &&
+      charBottom >= enemyTop &&
+      charBottom <= stompZone &&
+      charTop < enemyTop
+    );
   }
 
   checkBottleCollision() {
@@ -60,15 +83,6 @@ class World {
           this.bottleHit(enemy, bottle);
         }
       });
-    });
-  }
-
-  checkEnemyCollisions() {
-    this.level.enemies.forEach((enemy) => {
-      if (this.character.collidingHitbox(enemy) && enemy.energy > 0) {
-        this.character.hit();
-        this.statusBar.setPercentage(this.character.health);
-      }
     });
   }
 

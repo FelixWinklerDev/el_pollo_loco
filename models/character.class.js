@@ -184,7 +184,10 @@ class Character extends ColidableObject {
   }
 
   throwBottle() {
-    let bottle = new ThrowableObject(this.x + 100, this.y + 200);
+    let now = Date.now();
+    if (now - this.lastThrow < 1000) return; // 1 Sekunde Cooldown
+    this.lastThrow = now;
+    let bottle = new ThrowableObject(this.x + 300, this.y + 200);
     if (this.characterMoveLeft) {
       bottle.x = this.x;
       bottle.speedX -= -10;

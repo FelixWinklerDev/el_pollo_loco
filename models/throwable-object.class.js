@@ -21,6 +21,6 @@ class ThrowableObject extends ColidableObject {
     this.applyGravity();
     setInterval(() => {
       this.x += 10;
-    }, 25);
+    }, 15);
   }
 }

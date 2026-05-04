@@ -73,12 +73,6 @@ class ColidableObject extends MoveableObject {
     }, 1000 / 60);
   }
 
-  moveRight() {
-    setInterval(() => {
-      this.x += this.speed;
-    }, 1000 / 60);
-  }
-
   characterMoveLeft() {
     this.x -= this.speed;
     this.mirrored = true;
