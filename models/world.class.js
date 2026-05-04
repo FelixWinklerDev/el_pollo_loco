@@ -27,8 +27,7 @@ class World {
       this.checkCollision();
       this.checkBottleCollision();
       this.checkThrowItemCollisions();
-      this.handleCharacterEnemyCollision();
-    }, 100);
+    }, 50);
   }
 
   checkCollision() {
@@ -53,17 +52,18 @@ class World {
   }
 
   stomped(enemy) {
-    const charTop = this.character.y + this.character.offset.top;
+    const charLeft = this.character.x + this.character.offset.left;
+    const charRight =
+      this.character.x + this.character.width - this.character.offset.right;
     const charBottom =
       this.character.y + this.character.height - this.character.offset.bottom;
+    const enemyLeft = enemy.x + enemy.offset.left;
+    const enemyRight = enemy.x + enemy.width - enemy.offset.right;
     const enemyTop = enemy.y + enemy.offset.top;
-    const stompZone = enemyTop + 15;
-    return (
-      this.character.speedY < 0 &&
-      charBottom >= enemyTop &&
-      charBottom <= stompZone &&
-      charTop < enemyTop
-    );
+    const isFalling = this.character.speedY < 0;
+    const isDirectlyOver = charLeft < enemyRight && charRight > enemyLeft;
+    const isStomp = charBottom >= enemyTop && charBottom <= enemyTop + 20;
+    return isFalling && isDirectlyOver && isStomp;
   }
 
   checkBottleCollision() {

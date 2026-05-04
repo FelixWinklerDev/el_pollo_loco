@@ -67,6 +67,7 @@ class Character extends ColidableObject {
   jumpAnimationPlayed = false;
   deathAnimationPlayed = false;
   deathSequenceStarted = false;
+  lastThrow = 0;
   offset = {
     top: 120,
     bottom: 10,
@@ -74,7 +75,6 @@ class Character extends ColidableObject {
     right: 70,
   };
   bottleAmount = 0;
-  lastThrow = 0;
 
   constructor() {
     super();
@@ -184,16 +184,15 @@ class Character extends ColidableObject {
   }
 
   throwBottle() {
-    let now = Date.now();
-    if (now - this.lastThrow < 1000) return; // 1 Sekunde Cooldown
+    const now = Date.now();
+    if (now - this.lastThrow < 1500) return;
     this.lastThrow = now;
-    let bottle = new ThrowableObject(this.x + 300, this.y + 200);
-    if (this.characterMoveLeft) {
-      bottle.x = this.x;
-      bottle.speedX -= -10;
-    } else {
-      bottle.speedX += 10;
-    }
+    const startX = this.mirrored ? this.x + 20 : this.x + this.width - 60;
+    const startY = this.y + 160;
+    let bottle = new ThrowableObject(startX, startY);
+    bottle.speedX = this.mirrored ? -10 : 10;
+    bottle.speedY = -12;
+    bottle.applyGravity();
     this.world.throwableObjects.push(bottle);
     this.bottleAmount--;
     this.world.bottleCounter.setBottles(this.bottleAmount);

@@ -13,6 +13,7 @@ class ThrowableObject extends ColidableObject {
     this.y = y;
     this.height = 60;
     this.width = 50;
+    this.speedX = 0;
     this.throw();
   }
 
@@ -20,7 +21,8 @@ class ThrowableObject extends ColidableObject {
     this.speedY = 30;
     this.applyGravity();
     setInterval(() => {
-      this.x += 10;
+      this.playAnimation(this.animateThrow);
+      this.x += this.speedX;
     }, 15);
   }
 }

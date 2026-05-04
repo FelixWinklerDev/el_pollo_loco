@@ -3,7 +3,8 @@ class Boss extends ColidableObject {
   width = 300;
   y = 45;
   speed = 0;
-  energy = 100;
+  speedY = 0;
+  energy = 200;
   isDead = false;
 
   animatedWalk = [
@@ -75,12 +76,20 @@ class Boss extends ColidableObject {
     setInterval(() => {
       if (this.isDead) {
         this.playAnimation(this.animatedDead);
-      } else if (this.energy < 100) {
+      } 
+      if (this.energy < 100) {
         this.playAnimation(this.animatedHurt);
       } else {
         this.playAnimation(this.animatedAlert);
       }
     }, 200);
+  }
+
+  fly() {
+    if (this.energy == 80) {
+      this.playAnimation(this.animatedFly);
+      this.speedY = 40;
+    }
   }
 
   hit() {
