@@ -76,6 +76,7 @@ class Character extends ColidableObject {
   };
   bottleAmount = 0;
   coinAmount = 0;
+  lastAction = 0;
 
   constructor() {
     super();
@@ -91,7 +92,7 @@ class Character extends ColidableObject {
     this.y = 140;
     this.width = 240;
     this.height = 300;
-    this.animatedMoveRight();
+    this.airAnimate();
     this.applyGravity();
     this.animate();
   }
@@ -129,11 +130,14 @@ class Character extends ColidableObject {
       if (this.world.keyboard.A && this.x > 0) {
         this.characterMoveLeft();
       }
-      this.world.camera_x = -this.x - 1;
+      //else {
+      //  this.handleIdleAnimations();
+      //}
+      this.world.camera_x = -this.x - 3;
     }, 1000 / 60);
   }
 
-  animatedMoveRight() {
+  airAnimate() {
     setInterval(() => {
       if (this.isInAir()) {
         if (!this.jumpAnimationPlayed) {
@@ -150,6 +154,10 @@ class Character extends ColidableObject {
         }
       }
     }, 115);
+  }
+
+  handleIdleAnimations() {
+    this.playAnimation(this.animateIdle);
   }
 
   playDeathSequence() {

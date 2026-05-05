@@ -51,7 +51,7 @@ class ColidableObject extends MoveableObject {
       this instanceof Bottle
     ) {
       ctx.beginPath();
-      ctx.lineWidth = "4";
+      ctx.lineWidth = "2";
       ctx.strokeStyle = "green";
       ctx.rect(
         this.x + this.offset.left,

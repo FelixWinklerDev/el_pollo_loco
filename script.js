@@ -41,13 +41,21 @@ window.addEventListener("keyup", (event) => {
 });
 
 function openDialog() {
-  const dialogRef = document.getElementById('aboutUs');
+  const dialogRef = document.getElementById("aboutUs");
   dialogRef.showModal();
-  dialogRef.classList.add('opened');
 }
 
 function closeDialog() {
-  const dialogRef = document.getElementById('aboutUs');
-  dialogRef.classList.remove('opened');
+  const dialogRef = document.getElementById("aboutUs");
+  dialogRef.close();
+}
+
+function openImprintDialog() {
+  const dialogRef = document.getElementById("imprint");
+  dialogRef.showModal();
+}
+
+function closeImprintDialog() {
+  const dialogRef = document.getElementById("imprint");
   dialogRef.close();
 }

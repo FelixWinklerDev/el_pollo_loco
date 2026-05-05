@@ -1,4 +1,4 @@
-class Coin extends DrawableObject {
+class Coin extends MoveableObject {
   animatedCoin = ["./assets/8_coin/coin_1.png", "./assets/8_coin/coin_2.png"];
   width = 100;
   height = 100;
