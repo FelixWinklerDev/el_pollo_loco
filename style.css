@@ -2,6 +2,30 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: row;
   gap: 230px;
   height: 100%;
+}
+
+#aboutUs {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgb(165, 165, 40);
+}
+
+#trashbin::backdrop {
+  opacity: 0;
+  background-color: #1e0c06e7;
+  transition: all 0.25s ease-in;
+}
+
+#trashbin.opened::backdrop {
+  opacity: 0.85;
+  background-color: #1e0c06e7;
+  transition: all 0.25s ease-in;
+}
+
+#exitBtn {
+  background-color: #ffffff42;
+  border: none;
 }

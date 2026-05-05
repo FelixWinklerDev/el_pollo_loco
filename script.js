@@ -39,3 +39,15 @@ window.addEventListener("keyup", (event) => {
     keyboard.E = false;
   }
 });
+
+function openDialog() {
+  const dialogRef = document.getElementById('aboutUs');
+  dialogRef.showModal();
+  dialogRef.classList.add('opened');
+}
+
+function closeDialog() {
+  const dialogRef = document.getElementById('aboutUs');
+  dialogRef.classList.remove('opened');
+  dialogRef.close();
+}
