@@ -111,7 +111,7 @@ class World {
       if (this.character.collidingHitbox(coin)) {
         this.character.collectCoin();
         this.level.coins.splice(index, 1);
-        this.coinCounter.setCoins(this.character.coinAmount);
+        this.coinCounter.coinAmount(this.character.coinAmount);
       }
     });
   }

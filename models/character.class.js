@@ -75,6 +75,7 @@ class Character extends ColidableObject {
     right: 70,
   };
   bottleAmount = 0;
+  coinAmount = 0;
 
   constructor() {
     super();
@@ -182,7 +183,7 @@ class Character extends ColidableObject {
     }
   }
 
-    collectCoin() {
+  collectCoin() {
     if (this.coinAmount < 100) {
       this.coinAmount++;
     }

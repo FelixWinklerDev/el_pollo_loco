@@ -1,8 +1,5 @@
 class Coin extends DrawableObject {
-  animatedCoin = [
-    "./assets/8_coin/coin_1.png",
-    "./assets/8_coin/coin_2.png"
-  ]
+  animatedCoin = ["./assets/8_coin/coin_1.png", "./assets/8_coin/coin_2.png"];
   width = 100;
   height = 100;
 
@@ -14,9 +11,16 @@ class Coin extends DrawableObject {
   };
 
   constructor(x, y) {
-    super();
+    super().loadImage("./assets/8_coin/coin_1.png");
     this.loadImages(this.animatedCoin);
     this.x = x;
     this.y = y;
+    this.animate();
+  }
+
+  animate() {
+    setInterval(() => {
+      this.playAnimation(this.animatedCoin);
+    }, 300);
   }
 }

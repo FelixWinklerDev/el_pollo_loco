@@ -4,7 +4,7 @@ class CoinCounter extends Statusbar {
   constructor() {
     super();
     this.loadImage("./assets/7_statusbars/3_icons/icon_coin.png");
-    this.x = 360;
+    this.x = 310;
     this.y = 0;
     this.width = 50;
     this.height = 50;
@@ -19,6 +19,6 @@ class CoinCounter extends Statusbar {
 
     ctx.font = "32px Arial";
     ctx.fillStyle = "white";
-    ctx.fillText(this.coins, this.x + 360, this.y + 38);
+    ctx.fillText(this.coins, this.x + 50, this.y + 38);
   }
 }
