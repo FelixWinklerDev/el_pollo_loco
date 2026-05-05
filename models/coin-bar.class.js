@@ -1,20 +1,24 @@
-class Coinbar extends Statusbar {
-  coinImage = "./assets/7_statusbars/3_icons/icon_coin.png";
-
-  counter = 0
+class CoinCounter extends Statusbar {
+  coins = 0;
 
   constructor() {
     super();
+    this.loadImage("./assets/7_statusbars/3_icons/icon_coin.png");
     this.x = 360;
     this.y = 0;
+    this.width = 50;
     this.height = 50;
-    this.width = 150;
-    this.loadImages(this.coinImage);
-    this.countingCoins(0)
   }
 
-  countingCoins(value) {
-    this.counter = value;
-    
+  coinAmount(amount) {
+    this.coins = amount;
+  }
+
+  draw(ctx) {
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+
+    ctx.font = "32px Arial";
+    ctx.fillStyle = "white";
+    ctx.fillText(this.coins, this.x + 360, this.y + 38);
   }
 }

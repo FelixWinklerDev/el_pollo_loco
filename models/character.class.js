@@ -108,10 +108,10 @@ class Character extends ColidableObject {
       if (this.getDamage()) {
         this.playAnimation(this.animatedDamage);
         if (this.world.keyboard.D && this.x < this.world.level.level_end_x) {
-          this.x += this.speed * 0.8;
+          this.x += this.speed * 0.7;
         }
         if (this.world.keyboard.A && this.x > 0) {
-          this.x -= this.speed * 0.8;
+          this.x -= this.speed * 0.7;
         }
         this.world.camera_x = -this.x - 1;
         return;
@@ -179,7 +179,12 @@ class Character extends ColidableObject {
   collectBottle() {
     if (this.bottleAmount < 10) {
       this.bottleAmount++;
-      console.log(this.bottleAmount);
+    }
+  }
+
+    collectCoin() {
+    if (this.coinAmount < 100) {
+      this.coinAmount++;
     }
   }
 

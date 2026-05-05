@@ -7,6 +7,7 @@ class World {
   camera_x = 0;
   statusBar = new Healthbar();
   bottleCounter = new BottleCounter();
+  coinCounter = new CoinCounter();
   throwableObjects = [];
 
   constructor(canvas, keyboard) {
@@ -27,6 +28,7 @@ class World {
       this.checkCollision();
       this.checkBottleCollision();
       this.checkThrowItemCollisions();
+      this.checkCoinCollision();
     }, 50);
   }
 
@@ -104,6 +106,16 @@ class World {
     });
   }
 
+  checkCoinCollision() {
+    this.level.coins.forEach((coin, index) => {
+      if (this.character.collidingHitbox(coin)) {
+        this.character.collectCoin();
+        this.level.coins.splice(index, 1);
+        this.coinCounter.setCoins(this.character.coinAmount);
+      }
+    });
+  }
+
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -115,11 +127,13 @@ class World {
     // ---------- Space for fixed Objects ----------
     this.addToMap(this.statusBar);
     this.addToMap(this.bottleCounter);
+    this.addToMap(this.coinCounter);
     // ---------- Back to normal -------------------
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.bottles);
+    this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
 

@@ -76,8 +76,7 @@ class Boss extends ColidableObject {
     setInterval(() => {
       if (this.isDead) {
         this.playAnimation(this.animatedDead);
-      } 
-      if (this.energy < 100) {
+      } else if (this.energy < 100) {
         this.playAnimation(this.animatedHurt);
       } else {
         this.playAnimation(this.animatedAlert);

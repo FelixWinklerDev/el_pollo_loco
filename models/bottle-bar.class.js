@@ -14,7 +14,7 @@ class BottleCounter extends Statusbar {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     ctx.font = "32px Arial";
     ctx.fillStyle = "white";
-    ctx.fillText(this.bottles, this.x + 50, this.y + 39); // Position der Zahl
+    ctx.fillText(this.bottles, this.x + 50, this.y + 39);
   }
 
   setBottles(amount) {
