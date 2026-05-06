@@ -25,7 +25,7 @@ class ColidableObject extends MoveableObject {
   }
 
   hit() {
-    this.health -= 10;
+    this.health -= 20;
     if (this.health < 0) {
       this.health = 0;
     } else {
@@ -36,7 +36,7 @@ class ColidableObject extends MoveableObject {
   getDamage() {
     let timepassed = new Date().getTime() - this.lastHit;
     timepassed = timepassed / 1000;
-    return timepassed < 1.2;
+    return timepassed < 1.0;
   }
 
   isDead() {

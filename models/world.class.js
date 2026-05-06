@@ -49,8 +49,10 @@ class World {
       this.character.speedY = 15;
       return;
     }
-    this.character.hit();
-    this.statusBar.setPercentage(this.character.health);
+    if (!this.character.getDamage()) {
+      this.character.hit();
+      this.statusBar.setPercentage(this.character.health);
+    }
   }
 
   stomped(enemy) {

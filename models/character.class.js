@@ -97,46 +97,6 @@ class Character extends ColidableObject {
     this.animate();
   }
 
-  //animate() {
-  //  setInterval(() => {
-  //    if (this.isDead() && !this.deathSequenceStarted) {
-  //      this.deathSequenceStarted = true;
-  //      this.playDeathSequence();
-  //      return;
-  //    }
-  //    if (this.deathSequenceStarted) {
-  //      return;
-  //    }
-  //    if (this.getDamage()) {
-  //      this.playAnimation(this.animatedDamage);
-  //      if (this.world.keyboard.D && this.x < this.world.level.level_end_x) {
-  //        this.x += this.speed * 0.7;
-  //      }
-  //      if (this.world.keyboard.A && this.x > 0) {
-  //        this.x -= this.speed * 0.7;
-  //      }
-  //      this.world.camera_x = -this.x - 1;
-  //      return;
-  //    }
-  //    if (this.world.keyboard.D && this.x < this.world.level.level_end_x) {
-  //      this.characterMoveRight();
-  //    }
-  //    if (this.world.keyboard.W && !this.isInAir()) {
-  //      this.jump();
-  //    }
-  //    if (this.world.keyboard.E && this.bottleAmount > 0) {
-  //      this.throwBottle();
-  //    }
-  //    if (this.world.keyboard.A && this.x > 0) {
-  //      this.characterMoveLeft();
-  //    }
-  //    if (!this.world.keyboard.A && !this.world.keyboard.D && !this.isInAir()){
-  //      this.handleIdleAnimations();
-  //    }
-  //    this.world.camera_x = -this.x - 3;
-  //  }, 1000 / 60);
-  //}
-
   animate() {
     setInterval(() => {
       if (this.isDead() && !this.deathSequenceStarted) {
@@ -145,6 +105,16 @@ class Character extends ColidableObject {
         return;
       }
       if (this.deathSequenceStarted) {
+        return;
+      }
+      if (this.getDamage()) {
+        if (this.world.keyboard.D && this.x < this.world.level.level_end_x) {
+          this.x += this.speed * 0.6;
+        }
+        if (this.world.keyboard.A && this.x > 0) {
+          this.x -= this.speed * 0.6;
+        }
+        this.world.camera_x = -this.x - 5;
         return;
       }
       if (this.world.keyboard.D && this.x < this.world.level.level_end_x) {
@@ -164,15 +134,15 @@ class Character extends ColidableObject {
 
     setInterval(() => {
       if (this.isInAir()) {
-        this.playAnimation(this.animateJump);
+        this.playAnimation(this.animatedJump);
       } else if (this.getDamage()) {
         this.playAnimation(this.animatedDamage);
       } else if (this.world.keyboard.A || this.world.keyboard.D) {
-        this.playAnimation(this.animateWalk);
+        this.playAnimation(this.animatedMove);
       } else {
         this.handleIdleAnimations();
       }
-    }, 150);
+    }, 180);
   }
 
   airAnimate() {
@@ -191,7 +161,7 @@ class Character extends ColidableObject {
           this.playAnimation(this.animatedMove);
         }
       }
-    }, 115);
+    }, 180);
   }
 
   handleIdleAnimations() {

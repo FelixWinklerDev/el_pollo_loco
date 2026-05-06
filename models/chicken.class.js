@@ -12,13 +12,13 @@ class Chicken extends ColidableObject {
   ];
   currentImage = 0;
 
-  constructor() {
+  constructor(x) {
     super();
     this.loadImages(this.animatedMove);
     this.loadImage("./assets/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
 
-    this.x = 600 + Math.random() * 1000;
-    this.speed = 0.5 + Math.random() * 0.45;
+    this.x = x;
+    this.speed = 1.5 + Math.random() * 0.45;
     this.enemyMoveAnimation();
   }
 

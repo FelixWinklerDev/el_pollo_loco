@@ -68,7 +68,7 @@ class Boss extends ColidableObject {
     this.loadImages(this.animatedFly);
     this.loadImages(this.animatedHurt);
     this.loadImages(this.animatedDead);
-    this.x = 2400;
+    this.x = 4200;
     this.enemyMoveAnimation();
   }
 
