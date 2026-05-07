@@ -35,14 +35,30 @@
     <script src="./models/world.class.js"></script>
     <script src="script.js"></script>
   </head>
-  <body onload="init()">
+  <body>
     <main>
       <header>
         <h1>El Pollo Loco</h1>
       </header>
+      <section id="mainMenu" class="menu-container">
+        <img class="menu-img" src="./assets/9_intro_outro_screens/start/startscreen_1.png">
+        <div id="startScreen">
+          <button class="menu-btn" onclick="startGame()">PLAY</button>
+          <button class="menu-btn" onclick="showSettings()">SETTINGS</button>
+          <button class="menu-btn" id="muteBtn" onclick="toggleMute()">SOUND: ON</button>
+        </section>
+      </div>
       <canvas id="gameCanvas" height="480px" width="720px">
-        <dialog id="gameMenu"></dialog>
+        
       </canvas>
+      <section class="controlls">
+        <div class="controlls-container">
+          <p>A = Left</p>
+          <p>D = Right</p>
+          <p>W = Jump</p>
+          <p>E = Throw Bottle</p>
+        </div>
+      </section>
     </main>
     <section class="dialog-content">
       <dialog id="aboutUs">

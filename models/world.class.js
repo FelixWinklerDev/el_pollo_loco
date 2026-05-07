@@ -11,6 +11,7 @@ class World {
   throwableObjects = [];
   bossHealth = new BossHealthbar();
   winScreen = new Image();
+  loseScreen = new Image();
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -19,7 +20,10 @@ class World {
     this.draw();
     this.setWorld();
     this.runChecks();
-    this.winScreen.src = "./assets/You won, you lost/You Win A.png";
+    this.winScreen.src = "./assets/Youwon,youlost/YouWinA.png";
+    this.loseScreen.src = "./assets/Youwon,youlost/Youlostb.png";
+    this.gameWon = false;
+    this.gameLost = false;
   }
 
   setWorld() {
@@ -39,6 +43,7 @@ class World {
       this.checkCoinCollision();
       this.checkBottleOutOfCam();
       this.checkBossDeath();
+      this.checkGameOver()
     }, 50);
   }
 
@@ -139,12 +144,41 @@ class World {
     let boss = this.level.enemies.find((e) => e instanceof Boss);
     if (boss && boss.isDead) {
       setTimeout(() => {
-        this.showWinScreen();
+        this.gameWon = true;
+        this.ctx.drawImage(
+          this.winScreen,
+          0,
+          0,
+          this.canvas.width,
+          this.canvas.height,
+        );
+        this.stopGame();
+      }, 2000);
+    }
+  }
+
+  checkGameOver() {
+    if (this.character.health <= 0) {
+      setTimeout(() => {
+        this.gameLost = true;
+        this.ctx.drawImage(
+          this.loseScreen,
+          0,
+          0,
+          this.canvas.width,
+          this.canvas.height,
+        );
+        this.stopGame();
       }, 2000);
     }
   }
 
   draw() {
+    if (this.gameWon || this.gameLost) {
+      let img = this.gameWon ? this.winScreen : this.loseScreen;
+      this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+      return;
+    }
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.background);
@@ -155,15 +189,6 @@ class World {
     this.addToMap(this.coinCounter);
     if (this.bossTriggered()) {
       this.addToMap(this.bossHealth);
-    }
-    if (this.gameWon) {
-      this.ctx.drawImage(
-        this.winImage,
-        0,
-        0,
-        this.canvas.width,
-        this.canvas.height,
-      );
     }
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
@@ -204,11 +229,6 @@ class World {
   bossTriggered() {
     let boss = this.level.enemies.find((e) => e instanceof Boss);
     return boss && boss.hadFirstContact;
-  }
-
-  showWinScreen() {
-    this.stopGame();
-    document.getElementById("winningScreen").classList.remove("d-none");
   }
 
   stopGame() {

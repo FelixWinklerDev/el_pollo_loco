@@ -2,6 +2,12 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
+function startGame() {
+  document.getElementById("mainMenu").classList.add("d-none");
+  initateLevel();
+  init();
+}
+
 function init() {
   canvas = document.getElementById("gameCanvas");
   world = new World(canvas, keyboard);
@@ -58,4 +64,14 @@ function openImprintDialog() {
 function closeImprintDialog() {
   const dialogRef = document.getElementById("imprint");
   dialogRef.close();
+}
+
+function showStartScreen() {
+  document.getElementById("settingsScreen").classList.add("d-none");
+  document.getElementById("startScreen").classList.remove("d-none");
+}
+
+function showSettings() {
+  document.getElementById("startScreen").classList.add("d-none");
+  document.getElementById("settingsScreen").classList.remove("d-none");
 }
