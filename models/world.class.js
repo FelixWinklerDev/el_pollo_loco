@@ -9,6 +9,7 @@ class World {
   bottleCounter = new BottleCounter();
   coinCounter = new CoinCounter();
   throwableObjects = [];
+  bossHealth = new BossHealthbar();
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -21,6 +22,11 @@ class World {
 
   setWorld() {
     this.character.world = this;
+    this.level.enemies.forEach((enemy) => {
+      if (enemy instanceof Boss) {
+        enemy.world = this;
+      }
+    });
   }
 
   runChecks() {
@@ -29,6 +35,7 @@ class World {
       this.checkBottleCollision();
       this.checkThrowItemCollisions();
       this.checkCoinCollision();
+      this.checkBottleOutOfCam();
     }, 50);
   }
 
@@ -104,6 +111,14 @@ class World {
       let index = this.throwableObjects.indexOf(bottle);
       if (index !== -1) {
         this.throwableObjects.splice(index, 1);
+      }
+    });
+  }
+
+  checkBottleOutOfCam() {
+    this.throwableObjects.forEach((bottle) => {
+      if (bottle.x > -this.camera_x + 720 || bottle.x < -this.camera_x - 100) {
+        this.removeThrowableObject(bottle);
       }
     });
   }

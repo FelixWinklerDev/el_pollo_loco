@@ -131,7 +131,6 @@ class Character extends ColidableObject {
       }
       this.world.camera_x = -this.x - 3;
     }, 1000 / 60);
-
     setInterval(() => {
       if (this.isInAir()) {
         this.playAnimation(this.animatedJump);
@@ -207,7 +206,7 @@ class Character extends ColidableObject {
 
   throwBottle() {
     const now = Date.now();
-    if (now - this.lastThrow < 1500) return;
+    if (now - this.lastThrow < 700) return;
     this.lastThrow = now;
     const startX = this.mirrored ? this.x + 20 : this.x + this.width - 60;
     const startY = this.y + 160;

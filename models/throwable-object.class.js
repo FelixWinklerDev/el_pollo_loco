@@ -13,16 +13,16 @@ class ThrowableObject extends ColidableObject {
     this.y = y;
     this.height = 60;
     this.width = 50;
-    this.speedX = 0;
+    this.speedY = 30;
     this.throw();
   }
 
   throw() {
-    this.speedY = 30;
-    this.applyGravity();
+    setInterval(() => {
+      this.x += 15;
+    }, 1000 / 25);
     setInterval(() => {
       this.playAnimation(this.animateThrow);
-      this.x += this.speedX;
-    }, 15);
+    }, 25);
   }
 }

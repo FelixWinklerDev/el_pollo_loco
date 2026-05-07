@@ -61,7 +61,6 @@ const level1 = new Level(
     new Coin(3000, 300),
     new Coin(2800, 170),
     new Coin(2800, 265),
-    new Coin(3575, 50),
   ],
   [
     new BackgroundObject("./assets/5_background/layers/air.png", 0),
