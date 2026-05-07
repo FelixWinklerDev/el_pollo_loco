@@ -38,7 +38,6 @@ h3 {
 
 main {
   display: flex;
-  justify-content: space-around;
   align-items: center;
   flex-direction: column;
   height: 100vh;
@@ -47,7 +46,6 @@ main {
 
 canvas {
   background-color: black;
-  margin-bottom: 100px;
 }
 
 footer {
@@ -85,4 +83,26 @@ button {
 
 button:hover {
   text-decoration: underline;
+}
+
+table {
+  font-family: "Roboto-Regular", sans-serif;
+  font-size: 1.6rem;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: rgba(0, 0, 0, 0.255);
+  border-radius: 8px;
+  overflow: hidden;
+  padding-bottom: 10px;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #eda05e;
 }

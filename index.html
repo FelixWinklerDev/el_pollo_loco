@@ -40,25 +40,51 @@
       <header>
         <h1>El Pollo Loco</h1>
       </header>
-      <section id="mainMenu" class="menu-container">
-        <img class="menu-img" src="./assets/9_intro_outro_screens/start/startscreen_1.png">
-        <div id="startScreen">
-          <button class="menu-btn" onclick="startGame()">PLAY</button>
-          <button class="menu-btn" onclick="showSettings()">SETTINGS</button>
-          <button class="menu-btn" id="muteBtn" onclick="toggleMute()">SOUND: ON</button>
+      <div class="game-wrapper">
+        <section id="mainMenu" class="menu-container">
+          <img class="menu-img" src="./assets/9_intro_outro_screens/start/startscreen_1.png">
         </section>
+        <canvas id="gameCanvas" height="480px" width="720px"></canvas>
       </div>
-      <canvas id="gameCanvas" height="480px" width="720px">
-        
-      </canvas>
-      <section class="controlls">
-        <div class="controlls-container">
-          <p>A = Left</p>
-          <p>D = Right</p>
-          <p>W = Jump</p>
-          <p>E = Throw Bottle</p>
-        </div>
+      <section class="quick-menu">
+        <button class="menu-btn" onclick="startGame()">PLAY</button>
+        <button class="menu-btn" onclick="startGame()">RESET</button>
+        <button class="menu-btn" id="muteBtn" onclick="toggleMute()">SOUND: ON</button>
       </section>
+        <dialog id="howToPlay">
+          <section>
+            <button id="exitBtn" onclick="closeHowToPlayDialog()"><p>X</p></button>
+          </section>
+          <section>
+            <table>
+              <tr>
+                <th class="firstChild">Key</th>
+                <th>Action</th>
+              </tr>
+              <tr>
+                <td>A</td>
+                <td>Move Left</td>
+              </tr>
+              <tr>
+                <td>D</td>
+                <td>Move Right</td> 
+              </tr>
+              <tr>
+                <td>W</td>
+                <td>Jump</td> 
+              </tr>
+              <tr>
+                <td>E</td>
+                <td>Throw Bottle</td> 
+              </tr>
+            </table>
+            <p>here some quick tipps before starting:</p> 
+            <p>You can kill chickens easily by jumping on their heads.</p>
+            <p>Save your bottles for the Boss Fight! She is a ranged boss, so watch out.</p>
+            <p>Collect coins to boost your highscore!</p>
+            <p>There is nothing left to say but good luck and have fun!</p>
+          </section>
+        </dialog>
     </main>
     <section class="dialog-content">
       <dialog id="aboutUs">
@@ -125,6 +151,7 @@ Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unt
       <div class="footer-wrapper">
         <a href="#aboutUs" onclick="openDialog()">About us</a>
         <a href="#imprint" onclick="openImprintDialog()">Imprint</a>
+        <a href="#howToPlay" onclick="openHowToPlayDialog()">How To Play</a>
       </div>
       <div class="copyright-section">
         <p>

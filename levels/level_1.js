@@ -3,11 +3,18 @@ let level1;
 function initateLevel() {
   level1 = new Level(
     [
-      new Chicken(),
-      new Chicken(),
-      new Chicken(),
-      new Chicken(),
-      new Chicken(),
+      new Chicken(700 + Math.random() * 1000),
+      new Chicken(850 + Math.random() * 1000),
+      new Chicken(1200 + Math.random() * 1000),
+      new Chicken(1550 + Math.random() * 1000),
+      new Chicken(1880 + Math.random() * 1000),
+      new Chicken(2300 + Math.random() * 1000),
+      new Chicken(2780 + Math.random() * 1000),
+      new Chicken(3180 + Math.random() * 1000),
+      new Chicken(3500 + Math.random() * 1000),
+      new Chicken(3780 + Math.random() * 1000),
+      new Chicken(4180 + Math.random() * 1000),
+      new Chicken(4500 + Math.random() * 1000),
       new Boss(),
     ],
     [

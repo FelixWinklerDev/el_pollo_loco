@@ -11,7 +11,6 @@ function startGame() {
 function init() {
   canvas = document.getElementById("gameCanvas");
   world = new World(canvas, keyboard);
-  console.log("my Character is", world.character);
 }
 
 window.addEventListener("keypress", (event) => {
@@ -53,6 +52,16 @@ function openDialog() {
 
 function closeDialog() {
   const dialogRef = document.getElementById("aboutUs");
+  dialogRef.close();
+}
+
+function openHowToPlayDialog() {
+  const dialogRef = document.getElementById("howToPlay");
+  dialogRef.showModal();
+}
+
+function closeHowToPlayDialog() {
+  const dialogRef = document.getElementById("howToPlay");
   dialogRef.close();
 }
 

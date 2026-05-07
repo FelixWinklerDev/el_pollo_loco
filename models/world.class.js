@@ -20,8 +20,8 @@ class World {
     this.draw();
     this.setWorld();
     this.runChecks();
-    this.winScreen.src = "./assets/Youwon,youlost/YouWinA.png";
-    this.loseScreen.src = "./assets/Youwon,youlost/Youlostb.png";
+    this.winScreen.src = "./assets/Youwon,youlost/YouwinB.png";
+    this.loseScreen.src = "./assets/9_intro_outro_screens/game_over/oh no you lost!.png";
     this.gameWon = false;
     this.gameLost = false;
   }
