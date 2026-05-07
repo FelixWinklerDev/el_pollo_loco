@@ -10,6 +10,7 @@ class World {
   coinCounter = new CoinCounter();
   throwableObjects = [];
   bossHealth = new BossHealthbar();
+  winScreen = new Image();
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -18,6 +19,7 @@ class World {
     this.draw();
     this.setWorld();
     this.runChecks();
+    this.winScreen.src = "./assets/You won, you lost/You Win A.png";
   }
 
   setWorld() {
@@ -36,6 +38,7 @@ class World {
       this.checkThrowItemCollisions();
       this.checkCoinCollision();
       this.checkBottleOutOfCam();
+      this.checkBossDeath();
     }, 50);
   }
 
@@ -98,10 +101,9 @@ class World {
   }
 
   bottleHit(enemy, bottle) {
+    enemy.hit(10);
     if (enemy instanceof Boss) {
-      enemy.hit(20);
-    } else {
-      enemy.hit(10);
+      this.bossHealth.setPercentage(enemy.energy);
     }
     this.removeThrowableObject(bottle);
   }
@@ -133,19 +135,36 @@ class World {
     });
   }
 
+  checkBossDeath() {
+    let boss = this.level.enemies.find((e) => e instanceof Boss);
+    if (boss && boss.isDead) {
+      setTimeout(() => {
+        this.showWinScreen();
+      }, 2000);
+    }
+  }
+
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
     this.ctx.translate(this.camera_x, 0);
-
     this.addObjectsToMap(this.level.background);
     this.addObjectsToMap(this.level.cloud);
     this.ctx.translate(-this.camera_x, 0);
-    // ---------- Space for fixed Objects ----------
     this.addToMap(this.statusBar);
     this.addToMap(this.bottleCounter);
     this.addToMap(this.coinCounter);
-    // ---------- Back to normal -------------------
+    if (this.bossTriggered()) {
+      this.addToMap(this.bossHealth);
+    }
+    if (this.gameWon) {
+      this.ctx.drawImage(
+        this.winImage,
+        0,
+        0,
+        this.canvas.width,
+        this.canvas.height,
+      );
+    }
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
@@ -153,7 +172,6 @@ class World {
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
-
     let self = this;
     requestAnimationFrame(function () {
       self.draw();
@@ -181,5 +199,19 @@ class World {
     object.forEach((o) => {
       this.addToMap(o);
     });
+  }
+
+  bossTriggered() {
+    let boss = this.level.enemies.find((e) => e instanceof Boss);
+    return boss && boss.hadFirstContact;
+  }
+
+  showWinScreen() {
+    this.stopGame();
+    document.getElementById("winningScreen").classList.remove("d-none");
+  }
+
+  stopGame() {
+    for (let i = 1; i < 9999; i++) window.clearInterval(i);
   }
 }

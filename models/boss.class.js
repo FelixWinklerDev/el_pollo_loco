@@ -4,7 +4,7 @@ class Boss extends ColidableObject {
   y = 45;
   speed = 20;
   speedY = 0;
-  energy = 200;
+  energy = 100;
   isDead = false;
   hadFirstContact = false;
   arrivedAtTarget = false;
@@ -79,7 +79,7 @@ class Boss extends ColidableObject {
     setInterval(() => {
       if (this.isDead) {
         this.playAnimation(this.animatedDead);
-      } else if (this.energy < 200 && this.energy > 0 && !this.isAttacking) {
+      } else if (this.energy < 100 && this.energy > 0 && !this.isAttacking) {
         this.playAnimation(this.animatedHurt);
       } else if (this.isAttacking) {
         this.playAnimation(this.animatedAttack);
@@ -92,6 +92,13 @@ class Boss extends ColidableObject {
     }, 150);
   }
 
+  checkPlayerDistance() {
+    if (this.world && this.world.character.x > 3300) {
+      this.hadFirstContact = true;
+      console.log("Der Boss wurde getriggert!");
+    }
+  }
+
   shootChicken() {
     this.isAttacking = true;
     if (this.world) {
@@ -101,13 +108,6 @@ class Boss extends ColidableObject {
     setTimeout(() => {
       this.isAttacking = false;
     }, 800);
-  }
-
-  checkPlayerDistance() {
-    if (this.world && this.world.character.x > 3400) {
-      this.hadFirstContact = true;
-      console.log("Der Boss wurde getriggert!");
-    }
   }
 
   moveLeft() {
@@ -142,10 +142,15 @@ class Boss extends ColidableObject {
   }
 
   hit() {
-    this.energy -= 20;
+    this.energy -= 10;
     if (this.energy <= 0) {
       this.energy = 0;
       this.isDead = true;
+      this.stopBoss();
     }
+  }
+
+  stopBoss() {
+    clearInterval(this.attackInterval);
   }
 }

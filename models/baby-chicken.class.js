@@ -29,7 +29,7 @@ class BabyChicken extends ColidableObject {
       if (!this.isDead) {
         this.playAnimation(this.animatedWalk);
       }
-    }, 100);
+    }, 50);
   }
 
   hit() {

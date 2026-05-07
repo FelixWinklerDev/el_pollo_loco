@@ -193,7 +193,7 @@ class Character extends ColidableObject {
   }
 
   collectBottle() {
-    if (this.bottleAmount < 10) {
+    if (this.bottleAmount < 15) {
       this.bottleAmount++;
     }
   }

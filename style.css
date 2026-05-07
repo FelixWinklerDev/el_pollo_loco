@@ -24,3 +24,7 @@
 #exitBtn {
   background-color: #ffffff00;
 }
+
+.d-none {
+  display: none;
+}

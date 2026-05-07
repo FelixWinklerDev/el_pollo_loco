@@ -1,9 +1,9 @@
 class BossHealthbar extends Statusbar {
   healthbarImages = [
-    "./assets/7_statusbars/2_statusbar_endboss/blue/orange0.png",
-    "./assets/7_statusbars/2_statusbar_endboss/blue/orange20.png",
-    "./assets/7_statusbars/2_statusbar_endboss/blue/green40.png",
-    "./assets/7_statusbars/2_statusbar_endboss/blue/green60.png",
+    "./assets/7_statusbars/2_statusbar_endboss/orange/orange0.png",
+    "./assets/7_statusbars/2_statusbar_endboss/orange/orange20.png",
+    "./assets/7_statusbars/2_statusbar_endboss/green/green40.png",
+    "./assets/7_statusbars/2_statusbar_endboss/green/green60.png",
     "./assets/7_statusbars/2_statusbar_endboss/blue/blue80.png",
     "./assets/7_statusbars/2_statusbar_endboss/blue/blue100.png",
   ];
@@ -12,7 +12,7 @@ class BossHealthbar extends Statusbar {
 
   constructor() {
     super();
-    this.x = 10;
+    this.x = 560;
     this.y = 0;
     this.height = 50;
     this.width = 150;
