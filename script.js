@@ -8,6 +8,14 @@ function startGame() {
   init();
 }
 
+function restartGame() {
+    if (world) {
+        world.stopGame(); 
+    }
+    initateLevel();
+    init();
+}
+
 function init() {
   canvas = document.getElementById("gameCanvas");
   world = new World(canvas, keyboard);
@@ -78,9 +86,4 @@ function closeImprintDialog() {
 function showStartScreen() {
   document.getElementById("settingsScreen").classList.add("d-none");
   document.getElementById("startScreen").classList.remove("d-none");
-}
-
-function showSettings() {
-  document.getElementById("startScreen").classList.add("d-none");
-  document.getElementById("settingsScreen").classList.remove("d-none");
 }

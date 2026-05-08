@@ -2,7 +2,7 @@ class Boss extends ColidableObject {
   height = 425;
   width = 300;
   y = 45;
-  speed = 20;
+  speed = 30;
   speedY = 0;
   energy = 100;
   isDead = false;
@@ -51,6 +51,15 @@ class Boss extends ColidableObject {
   ];
 
   animatedDead = [
+    "./assets/4_enemie_boss_chicken/4_hurt/G21.png",
+    "./assets/4_enemie_boss_chicken/4_hurt/G22.png",
+    "./assets/4_enemie_boss_chicken/4_hurt/G23.png",
+    "./assets/4_enemie_boss_chicken/4_hurt/G21.png",
+    "./assets/4_enemie_boss_chicken/4_hurt/G22.png",
+    "./assets/4_enemie_boss_chicken/4_hurt/G23.png",
+    "./assets/4_enemie_boss_chicken/4_hurt/G21.png",
+    "./assets/4_enemie_boss_chicken/4_hurt/G22.png",
+    "./assets/4_enemie_boss_chicken/4_hurt/G23.png",
     "./assets/4_enemie_boss_chicken/5_dead/G24.png",
     "./assets/4_enemie_boss_chicken/5_dead/G25.png",
     "./assets/4_enemie_boss_chicken/5_dead/G26.png",
@@ -78,7 +87,8 @@ class Boss extends ColidableObject {
   animateBoss() {
     setInterval(() => {
       if (this.isDead) {
-        this.playAnimation(this.animatedDead);
+        this.playDeathAnimation(this.animatedDead);
+        return;
       } else if (this.energy < 100 && this.energy > 0 && !this.isAttacking) {
         this.playAnimation(this.animatedHurt);
       } else if (this.isAttacking) {
@@ -95,7 +105,6 @@ class Boss extends ColidableObject {
   checkPlayerDistance() {
     if (this.world && this.world.character.x > 3300) {
       this.hadFirstContact = true;
-      console.log("Der Boss wurde getriggert!");
     }
   }
 
@@ -107,7 +116,7 @@ class Boss extends ColidableObject {
     }
     setTimeout(() => {
       this.isAttacking = false;
-    }, 800);
+    }, 850);
   }
 
   moveLeft() {
@@ -134,19 +143,30 @@ class Boss extends ColidableObject {
     }, 1500);
   }
 
-  fly() {
-    if (this.energy == 80) {
-      this.playAnimation(this.animatedFly);
-      this.speedY = 40;
-    }
-  }
-
   hit() {
     this.energy -= 10;
     if (this.energy <= 0) {
       this.energy = 0;
       this.isDead = true;
       this.stopBoss();
+    }
+  }
+
+  die() {
+    this.isDead = true;
+    setTimeout(() => {
+      this.readyToRemove = true;
+    }, 2000);
+  }
+
+  playDeathAnimation(images) {
+    let i = this.currentImage % images.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentImage++;
+    if (this.currentImage >= images.length) {
+      this.isDead = true;
+      this.currentImage = images.length - 1;
     }
   }
 

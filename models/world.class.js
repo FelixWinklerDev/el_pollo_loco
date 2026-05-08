@@ -20,8 +20,9 @@ class World {
     this.draw();
     this.setWorld();
     this.runChecks();
-    this.winScreen.src = "./assets/Youwon,youlost/YouwinB.png";
-    this.loseScreen.src = "./assets/9_intro_outro_screens/game_over/oh no you lost!.png";
+    this.winScreen.src = "./assets/you_won_you_lost/you_win_b.png";
+    this.loseScreen.src =
+      "./assets/9_intro_outro_screens/game_over/oh_no_you_lost!.png";
     this.gameWon = false;
     this.gameLost = false;
   }
@@ -43,7 +44,7 @@ class World {
       this.checkCoinCollision();
       this.checkBottleOutOfCam();
       this.checkBossDeath();
-      this.checkGameOver()
+      this.checkGameOver();
     }, 50);
   }
 
@@ -52,7 +53,7 @@ class World {
       if (this.character.collidingHitbox(enemy) && enemy.energy > 0) {
         this.handleCharacterEnemyCollision(enemy);
       }
-      if (enemy.isDead) {
+      if (enemy.readyToRemove) {
         this.level.enemies.splice(index, 1);
       }
     });
@@ -145,13 +146,6 @@ class World {
     if (boss && boss.isDead) {
       setTimeout(() => {
         this.gameWon = true;
-        this.ctx.drawImage(
-          this.winScreen,
-          0,
-          0,
-          this.canvas.width,
-          this.canvas.height,
-        );
         this.stopGame();
       }, 2000);
     }
@@ -161,13 +155,6 @@ class World {
     if (this.character.health <= 0) {
       setTimeout(() => {
         this.gameLost = true;
-        this.ctx.drawImage(
-          this.loseScreen,
-          0,
-          0,
-          this.canvas.width,
-          this.canvas.height,
-        );
         this.stopGame();
       }, 2000);
     }

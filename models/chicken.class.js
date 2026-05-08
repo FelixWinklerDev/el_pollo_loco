@@ -3,7 +3,6 @@ class Chicken extends ColidableObject {
   width = 80;
   y = 340;
   energy = 10;
-  isDead = false;
 
   animatedMove = [
     "./assets/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
@@ -36,7 +35,7 @@ class Chicken extends ColidableObject {
     this.energy = 0;
     this.loadImage("./assets/3_enemies_chicken/chicken_normal/2_dead/dead.png");
     setTimeout(() => {
-      this.isDead = true;
+      this.readyToRemove = true;
     }, 500);
   }
 }
