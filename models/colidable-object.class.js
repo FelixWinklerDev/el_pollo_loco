@@ -65,6 +65,7 @@ class ColidableObject extends MoveableObject {
 
   jump() {
     this.speedY = 20;
+    playSound(gameSounds.jump_sound)
   }
 
   moveLeft() {

@@ -63,10 +63,12 @@ class World {
     if (this.stomped(enemy)) {
       enemy.hit();
       this.character.speedY = 15;
+      playSound(gameSounds.bounce_sound);
       return;
     }
     if (!this.character.getDamage()) {
       this.character.hit();
+      playSound(gameSounds.pepe_hurt);
       this.statusBar.setPercentage(this.character.health);
     }
   }
@@ -90,6 +92,7 @@ class World {
     this.level.bottles.forEach((bottle, index) => {
       if (this.character.collidingHitbox(bottle)) {
         this.character.collectBottle();
+        playSound(gameSounds.bottle_sound);
         this.level.bottles.splice(index, 1);
         this.bottleCounter.setBottles(this.character.bottleAmount);
       }
@@ -101,6 +104,7 @@ class World {
       this.level.enemies.forEach((enemy) => {
         if (enemy.energy > 0 && bottle.collidingHitbox(enemy)) {
           this.bottleHit(enemy, bottle);
+          playSound(gameSounds.bottle_break);
         }
       });
     });
@@ -108,8 +112,12 @@ class World {
 
   bottleHit(enemy, bottle) {
     enemy.hit(10);
+
     if (enemy instanceof Boss) {
       this.bossHealth.setPercentage(enemy.energy);
+      playSound(gameSounds.boss_hit);
+    } else {
+      playSound(gameSounds.chicken_death);
     }
     this.removeThrowableObject(bottle);
   }
@@ -135,6 +143,7 @@ class World {
     this.level.coins.forEach((coin, index) => {
       if (this.character.collidingHitbox(coin)) {
         this.character.collectCoin();
+        playSound(gameSounds.coin_sound);
         this.level.coins.splice(index, 1);
         this.coinCounter.coinAmount(this.character.coinAmount);
       }

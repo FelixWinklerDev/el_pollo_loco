@@ -1,12 +1,10 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-let isMuted = false;
-let musicStarted = false;
 
 function startGame() {
-  menu_sound.pause();
-  menu_sound.currentTime = 0;
+  gameSounds.menu_music.pause();
+  gameSounds.menu_music.currentTime = 0;
   document.getElementById("mainMenu").classList.add("d-none");
   initateLevel();
   init();
@@ -23,18 +21,6 @@ function restartGame() {
 function init() {
   canvas = document.getElementById("gameCanvas");
   world = new World(canvas, keyboard);
-}
-
-function toggleMute() {
-  isMuted = !isMuted;
-  let btn = document.getElementById("muteBtn");
-  if (isMuted) {
-    menu_sound.pause();
-    btn.innerText = "SOUND: OFF";
-  } else {
-    menu_sound.play();
-    btn.innerText = "SOUND: ON";
-  }
 }
 
 window.addEventListener("keypress", (event) => {

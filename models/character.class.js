@@ -173,6 +173,7 @@ class Character extends ColidableObject {
       if (deathFrame < this.animatedDeath.length) {
         this.playAnimation(this.animatedDeath);
         deathFrame++;
+        playSound(gameSounds.pepe_death);
       } else {
         clearInterval(deathInterval);
         this.deathJumpUp();

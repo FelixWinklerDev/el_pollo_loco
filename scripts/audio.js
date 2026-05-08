@@ -1,3 +1,70 @@
-let menu_sound = new Audio("./assets/audio/main-menu-song.mp3");
-menu_sound.loop = true;
-menu_sound.volume = 0.5;
+const gameSounds = {
+  menu_music: new Audio("./assets/audio/main-song.mp3"),
+  boss_music: new Audio("./assets/audio/boss-song.mp3"),
+  chicken_sound: new Audio("./assets/audio/chicken-noise-casual.mp3"),
+  chicken_death: new Audio("./assets/audio/chicken-scream.mp3"),
+  coin_sound: new Audio("./assets/audio/drop-coin.mp3"),
+  jump_sound: new Audio("./assets/audio/jump.mp3"),
+  bounce_sound: new Audio("./assets/audio/bounce.mp3"),
+  bottle_sound: new Audio("./assets/audio/bottle-clink.mp3"),
+  bottle_break: new Audio("./assets/audio/bottle-break.mp3"),
+  boss_sound: new Audio("./assets/audio/turkey.mp3"),
+  boss_hit: new Audio("./assets/audio/turkey-hit.mp3"),
+  boss_dead: new Audio("./assets/audio/boss-dead.mp3"),
+  pepe_hurt: new Audio("./assets/audio/hurt.mp3"),
+  pepe_death: new Audio("./assets/audio/falling-scream.mp3"),
+  pepe_idle: new Audio("./assets/audio/main-song.mp3"),
+};
+let musicStarted = false;
+let isMuted = false;
+
+gameSounds.menu_music.loop = true;
+gameSounds.boss_music.loop = true;
+
+// audio.js
+function playSound(sound) {
+  if (isMuted) {
+    return;
+  }
+  sound.currentTime = 0;
+  sound.play();
+}
+
+function stopSound(sound) {
+  sound.pause();
+  sound.currentTime = 0;
+}
+
+function toggleMute() {
+  isMuted = !isMuted;
+  let btn = document.getElementById("muteBtn");
+  if (isMuted) {
+    btn.innerText = "SOUNDS: OFF";
+    stopSound(gameSounds.menu_music);
+    stopSound(gameSounds.boss_music);
+  } else {
+    btn.innerText = "SOUNDS: ON";
+    let boss = world.level.enemies.find((e) => e instanceof Boss);
+    if (boss && boss.hadFirstContact && !boss.isDead) {
+      playSound(gameSounds.boss_music);
+    } else {
+      playSound(gameSounds.menu_music);
+    }
+  }
+}
+
+function pauseAllBackgroundMusic() {
+  gameSounds.menu_music.pause();
+  gameSounds.boss_music.pause();
+}
+
+function startAllBackgroundMusic() {
+  if (
+    world &&
+    world.level.enemies.find((e) => e instanceof Boss)?.hadFirstContact
+  ) {
+    playSound(gameSounds.boss_music);
+  } else {
+    playSound(gameSounds.menu_music);
+  }
+}

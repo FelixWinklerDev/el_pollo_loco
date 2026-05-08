@@ -8,7 +8,8 @@ class Boss extends ColidableObject {
   isDead = false;
   hadFirstContact = false;
   arrivedAtTarget = false;
-  attackInterval = null;
+  isAttacking = false;
+  attackTimer = null;
 
   animatedWalk = [
     "./assets/4_enemie_boss_chicken/1_walk/G1.png",
@@ -89,21 +90,26 @@ class Boss extends ColidableObject {
       if (this.isDead) {
         this.playDeathAnimation(this.animatedDead);
         return;
-      } else if (this.energy < 100 && this.energy > 0 && !this.isAttacking) {
-        this.playAnimation(this.animatedHurt);
-      } else if (this.isAttacking) {
-        this.playAnimation(this.animatedAttack);
-      } else if (this.hadFirstContact) {
+      }
+      if (this.hadFirstContact && !this.isAttacking) {
         this.handleBossPhases();
+      } else if (!this.hadFirstContact) {
+        this.checkPlayerDistance();
+      }
+      if (this.isAttacking) {
+        this.playAnimation(this.animatedAttack);
+      } else if (this.energy < 100 && this.isHurt()) {
+        this.playAnimation(this.animatedHurt);
+      } else if (this.hadFirstContact) {
+        this.playAnimation(this.animatedAlert);
       } else {
         this.playAnimation(this.animatedAlert);
-        this.checkPlayerDistance();
       }
     }, 150);
   }
 
   checkPlayerDistance() {
-    if (this.world && this.world.character.x > 3300) {
+    if (this.world && this.world.character.x > 3300 && !this.hadFirstContact) {
       this.hadFirstContact = true;
     }
   }
@@ -113,6 +119,7 @@ class Boss extends ColidableObject {
     if (this.world) {
       let baby = new BabyChicken(this.x);
       this.world.level.enemies.push(baby);
+      playSound(gameSounds.boss_sound);
     }
     setTimeout(() => {
       this.isAttacking = false;
@@ -136,9 +143,9 @@ class Boss extends ColidableObject {
     }
   }
 
-  startAttacking() {
-    if (this.attackInterval) return;
-    this.attackInterval = setInterval(() => {
+startAttacking() {
+    if (this.attackTimer)
+    this.attackTimer = setInterval(() => {
       this.shootChicken();
     }, 1500);
   }
@@ -148,8 +155,17 @@ class Boss extends ColidableObject {
     if (this.energy <= 0) {
       this.energy = 0;
       this.isDead = true;
+      playSound(gameSounds.boss_dead);
       this.stopBoss();
+    } else {
+      this.lastHit = new Date().getTime();
     }
+  }
+
+  isHurt() {
+    let timePassed = new Date().getTime() - this.lastHit;
+    timePassed = timePassed / 1000;
+    return timePassed < 0.5;
   }
 
   die() {
@@ -170,7 +186,8 @@ class Boss extends ColidableObject {
     }
   }
 
-  stopBoss() {
-    clearInterval(this.attackInterval);
+stopBoss() {
+    clearInterval(this.attackTimer);
+    this.attackTimer = null;
   }
 }
