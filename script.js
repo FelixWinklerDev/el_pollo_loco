@@ -13,6 +13,8 @@ function startGame() {
 function restartGame() {
   if (world) {
     world.stopGame();
+    pauseAllSounds();
+    pauseAllBackgroundMusic();
   }
   initateLevel();
   init();
@@ -88,4 +90,30 @@ function closeImprintDialog() {
 function showStartScreen() {
   document.getElementById("settingsScreen").classList.add("d-none");
   document.getElementById("startScreen").classList.remove("d-none");
+}
+
+function openFullscreen() {
+  let elem = document.getElementById("game-wrapper");
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) {
+    /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    /* IE11 */
+    elem.msRequestFullscreen();
+  }
+}
+
+function closeFullscreen() {
+  let elem = document.getElementById("game-wrapper");
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) {
+    /* Safari */
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {
+    /* IE11 */
+    document.msExitFullscreen();
+  }
 }

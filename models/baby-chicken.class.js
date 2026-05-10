@@ -3,7 +3,7 @@ class BabyChicken extends ColidableObject {
   width = 50;
   y = 350;
   speed = 4;
-  energy = 10;
+  isDead = false;
 
   animatedWalk = [
     "./assets/3_enemies_chicken/chicken_small/1_walk/1_w.png",
@@ -37,7 +37,7 @@ class BabyChicken extends ColidableObject {
     this.energy = 0;
     this.loadImage("./assets/3_enemies_chicken/chicken_small/2_dead/dead.png");
     setTimeout(() => {
-      this.readyToRemove = true;
+      this.isDead = true;
     }, 500);
   }
 }

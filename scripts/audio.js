@@ -58,6 +58,22 @@ function pauseAllBackgroundMusic() {
   gameSounds.boss_music.pause();
 }
 
+function pauseAllSounds() {
+  gameSounds.chicken_sound.pause();
+  gameSounds.chicken_death.pause();
+  gameSounds.coin_sound.pause();
+  gameSounds.jump_sound.pause();
+  gameSounds.bounce_sound.pause();
+  gameSounds.bottle_sound.pause();
+  gameSounds.bottle_break.pause();
+  gameSounds.boss_sound.pause();
+  gameSounds.boss_hit.pause();
+  gameSounds.boss_dead.pause();
+  gameSounds.pepe_hurt.pause();
+  gameSounds.pepe_death.pause();
+  gameSounds.pepe_idle.pause();
+}
+
 function startAllBackgroundMusic() {
   if (
     world &&

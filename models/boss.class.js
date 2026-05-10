@@ -143,11 +143,12 @@ class Boss extends ColidableObject {
     }
   }
 
-startAttacking() {
-    if (this.attackTimer)
-    this.attackTimer = setInterval(() => {
-      this.shootChicken();
-    }, 1500);
+  startAttacking() {
+    if (!this.attackTimer) {
+      this.attackTimer = setInterval(() => {
+        this.shootChicken();
+      }, 1500);
+    }
   }
 
   hit() {
@@ -186,7 +187,7 @@ startAttacking() {
     }
   }
 
-stopBoss() {
+  stopBoss() {
     clearInterval(this.attackTimer);
     this.attackTimer = null;
   }

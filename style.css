@@ -26,11 +26,15 @@
   background-color: #ffffff00;
 }
 
-.game-wrapper {
+#game-wrapper {
   position: relative;
   width: 720px;
   height: 480px;
   margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 #gameCanvas {
@@ -69,6 +73,7 @@
   font-size: 1.6rem;
   color: white;
   text-align: center;
+  z-index: 1000;
 }
 
 .d-none {
