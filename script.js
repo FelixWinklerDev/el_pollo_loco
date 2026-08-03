@@ -8,6 +8,7 @@ function startGame() {
   document.getElementById("mainMenu").classList.add("d-none");
   initateLevel();
   init();
+  startAllBackgroundMusic();
 }
 
 function restartGame() {
@@ -18,6 +19,7 @@ function restartGame() {
   }
   initateLevel();
   init();
+  startAllBackgroundMusic();
 }
 
 function init() {

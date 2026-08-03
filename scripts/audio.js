@@ -27,7 +27,7 @@ function playSound(sound) {
     return;
   }
   sound.currentTime = 0;
-  sound.play();
+  sound.play().catch(() => {});
 }
 
 function stopSound(sound) {
@@ -75,6 +75,7 @@ function pauseAllSounds() {
 }
 
 function startAllBackgroundMusic() {
+  pauseAllBackgroundMusic();
   if (
     world &&
     world.level.enemies.find((e) => e instanceof Boss)?.hadFirstContact
@@ -83,4 +84,12 @@ function startAllBackgroundMusic() {
   } else {
     playSound(gameSounds.menu_music);
   }
+}
+
+function switchToBossMusic() {
+  if (isMuted) {
+    return;
+  }
+  pauseAllBackgroundMusic();
+  playSound(gameSounds.boss_music);
 }

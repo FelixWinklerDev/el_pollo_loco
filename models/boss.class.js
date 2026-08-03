@@ -10,6 +10,7 @@ class Boss extends ColidableObject {
   arrivedAtTarget = false;
   isAttacking = false;
   attackTimer = null;
+  bossMusicStarted = false;
 
   animatedWalk = [
     "./assets/4_enemie_boss_chicken/1_walk/G1.png",
@@ -117,7 +118,7 @@ class Boss extends ColidableObject {
   shootChicken() {
     this.isAttacking = true;
     if (this.world) {
-      let baby = new BabyChicken(this.x);
+      let baby = new BabyChicken(this.x, this.energy);
       this.world.level.enemies.push(baby);
       playSound(gameSounds.boss_sound);
     }
@@ -139,6 +140,10 @@ class Boss extends ColidableObject {
     } else {
       this.arrivedAtTarget = true;
       this.playAnimation(this.animatedAlert);
+      if (!this.bossMusicStarted && typeof switchToBossMusic === "function") {
+        switchToBossMusic();
+        this.bossMusicStarted = true;
+      }
       this.startAttacking();
     }
   }
