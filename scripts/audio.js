@@ -13,13 +13,14 @@ const gameSounds = {
   boss_dead: new Audio("./assets/audio/boss-dead.mp3"),
   pepe_hurt: new Audio("./assets/audio/hurt.mp3"),
   pepe_death: new Audio("./assets/audio/falling-scream.mp3"),
-  pepe_idle: new Audio("./assets/audio/main-song.mp3"),
+  pepe_idle: new Audio("./assets/audio/snoring-long.mp3"),
 };
 let musicStarted = false;
 let isMuted = false;
 
 gameSounds.menu_music.loop = true;
 gameSounds.boss_music.loop = true;
+gameSounds.pepe_idle.loop = true;
 
 // audio.js
 function playSound(sound) {

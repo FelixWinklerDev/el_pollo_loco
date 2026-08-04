@@ -11,6 +11,9 @@ class Boss extends ColidableObject {
   isAttacking = false;
   attackTimer = null;
   bossMusicStarted = false;
+  deathAnimationTimer = null;
+  deathAnimationFrameDuration = 150;
+  deathCurrentImage = 0;
 
   animatedWalk = [
     "./assets/4_enemie_boss_chicken/1_walk/G1.png",
@@ -65,6 +68,11 @@ class Boss extends ColidableObject {
     "./assets/4_enemie_boss_chicken/5_dead/G24.png",
     "./assets/4_enemie_boss_chicken/5_dead/G25.png",
     "./assets/4_enemie_boss_chicken/5_dead/G26.png",
+    "./assets/4_enemie_boss_chicken/5_dead/G26.png",
+    "./assets/4_enemie_boss_chicken/5_dead/G26.png",
+    "./assets/4_enemie_boss_chicken/5_dead/G26.png",
+    "./assets/4_enemie_boss_chicken/5_dead/G26.png",
+    "./assets/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
   currentImage = 0;
@@ -89,7 +97,9 @@ class Boss extends ColidableObject {
   animateBoss() {
     setInterval(() => {
       if (this.isDead) {
-        this.playDeathAnimation(this.animatedDead);
+        if (!this.deathAnimationTimer) {
+          this.startDeathAnimation(this.animatedDead);
+        }
         return;
       }
       if (this.hadFirstContact && !this.isAttacking) {
@@ -181,19 +191,38 @@ class Boss extends ColidableObject {
     }, 2000);
   }
 
+  startDeathAnimation(images) {
+    if (this.deathAnimationTimer) {
+      return;
+    }
+
+    this.deathCurrentImage = 0;
+    this.deathAnimationTimer = setInterval(() => {
+      this.playDeathAnimation(images);
+      if (this.deathCurrentImage >= images.length) {
+        clearInterval(this.deathAnimationTimer);
+        this.deathAnimationTimer = null;
+        this.currentImage = images.length - 1;
+        this.readyToRemove = true;
+      }
+    }, this.deathAnimationFrameDuration);
+  }
+
   playDeathAnimation(images) {
-    let i = this.currentImage % images.length;
+    let i = this.deathCurrentImage % images.length;
     let path = images[i];
     this.img = this.imageCache[path];
-    this.currentImage++;
-    if (this.currentImage >= images.length) {
-      this.isDead = true;
+    this.deathCurrentImage++;
+    if (this.deathCurrentImage >= images.length) {
       this.currentImage = images.length - 1;
+      this.isDead = true;
     }
   }
 
   stopBoss() {
-    clearInterval(this.attackTimer);
-    this.attackTimer = null;
+    if (this.attackTimer) {
+      clearInterval(this.attackTimer);
+      this.attackTimer = null;
+    }
   }
 }

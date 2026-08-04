@@ -2,6 +2,22 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
+function closeRotateDeviceDialog() {
+  const dialog = document.getElementById("rotateDeviceDialog");
+  if (dialog) {
+    dialog.classList.add("dismissed");
+  }
+}
+
+window.matchMedia("(orientation: landscape)").addEventListener("change", function(e) {
+  if (e.matches) {
+    const dialog = document.getElementById("rotateDeviceDialog");
+    if (dialog) {
+      dialog.classList.remove("dismissed");
+    }
+  }
+});
+
 function startGame() {
   gameSounds.menu_music.pause();
   gameSounds.menu_music.currentTime = 0;

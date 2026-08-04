@@ -58,7 +58,19 @@ function initateLevel() {
       new Coin(1800, 180),
       new Coin(1900, 160),
     ],
-    [
+    [new BackgroundObject("./assets/5_background/layers/air.png", -718.5),
+      new BackgroundObject(
+        "./assets/5_background/layers/3_third_layer/2.png",
+        -718.5,
+      ),
+      new BackgroundObject(
+        "./assets/5_background/layers/2_second_layer/2.png",
+        -718.5,
+      ),
+      new BackgroundObject(
+        "./assets/5_background/layers/1_first_layer/2.png",
+        -718.5,
+      ),
       new BackgroundObject("./assets/5_background/layers/air.png", 0),
       new BackgroundObject(
         "./assets/5_background/layers/3_third_layer/1.png",

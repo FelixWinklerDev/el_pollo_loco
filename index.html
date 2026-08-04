@@ -51,14 +51,14 @@
         <canvas id="gameCanvas" height="480px" width="720px"></canvas>
       </div>
       <section class="quick-menu">
-        <button class="menu-btn" onclick="startGame()">
+        <button class="menu-btn" id="playBtn" onclick="startGame()">
           <img
             class="icons"
-            src="./assets/html-img/samuel1983-play-1173495_640.png"
+            src="./assets/html-img/texler-play-2398749_640.png"
             alt="play button"
           />
         </button>
-        <button class="menu-btn" onclick="restartGame()">
+        <button class="menu-btn" id="restartBtn" onclick="restartGame()">
           <img
             class="icons"
             src="./assets/html-img/openclipart-vectors-ecology-159161_640.png"
@@ -72,7 +72,13 @@
             alt="music toggle"
           />
         </button>
-        <button class="menu-btn" onclick="openFullscreen()"><img class="icons" src="./assets/html-img/openclipart-vectors-monitor-151387_640.png" alt=""></button>
+        <button class="menu-btn" onclick="openFullscreen()">
+          <img
+            class="icons"
+            src="./assets/html-img/coffeebeanworks-icon-1968238_640.png"
+            alt=""
+          />
+        </button>
       </section>
       <footer>
         <div class="footer-wrapper">
@@ -121,6 +127,19 @@
         </section>
       </dialog>
     </main>
+    <div id="rotateDeviceDialog">
+      <section class="dialog-content-inner">
+        <h2>Please rotate your device</h2>
+        <p>
+          Please switch your device from portrait to landscape mode for the best
+          experience.
+        </p>
+        <video autoplay loop muted playsinline class="rotate-gif">
+          <source src="./assets/html-img/240570_tiny.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </section>
+    </div>
     <section class="dialog-content">
       <dialog id="aboutUs">
         <section class="d-flex right-bound">

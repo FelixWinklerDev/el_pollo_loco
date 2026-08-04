@@ -101,6 +101,9 @@ class World {
 
   checkThrowItemCollisions() {
     this.throwableObjects.forEach((bottle) => {
+      if (bottle.isSplashing || bottle.readyToRemove) {
+        return;
+      }
       this.level.enemies.forEach((enemy) => {
         if (enemy.energy > 0 && bottle.collidingHitbox(enemy)) {
           this.bottleHit(enemy, bottle);
@@ -119,16 +122,17 @@ class World {
     } else {
       playSound(gameSounds.chicken_death);
     }
-    this.removeThrowableObject(bottle);
+    bottle.startSplash();
+    this.removeThrowableObject(bottle, 300);
   }
 
-  removeThrowableObject(bottle) {
+  removeThrowableObject(bottle, delay = 0) {
     setTimeout(() => {
       let index = this.throwableObjects.indexOf(bottle);
       if (index !== -1) {
         this.throwableObjects.splice(index, 1);
       }
-    });
+    }, delay);
   }
 
   checkBottleOutOfCam() {

@@ -68,6 +68,9 @@ class Character extends ColidableObject {
   deathAnimationPlayed = false;
   deathSequenceStarted = false;
   lastThrow = 0;
+  idleTimer = null;
+  idleSoundStarted = false;
+  longIdleActive = false;
   offset = {
     top: 120,
     bottom: 10,
@@ -98,6 +101,8 @@ class Character extends ColidableObject {
   }
 
   animate() {
+    this.resetIdleTimer();
+
     setInterval(() => {
       if (this.isDead() && !this.deathSequenceStarted) {
         this.deathSequenceStarted = true;
@@ -129,6 +134,14 @@ class Character extends ColidableObject {
       if (this.world.keyboard.E && this.bottleAmount > 0) {
         this.throwBottle();
       }
+      if (
+        this.world.keyboard.A ||
+        this.world.keyboard.D ||
+        this.world.keyboard.W ||
+        this.world.keyboard.E
+      ) {
+        this.resetIdleTimer();
+      }
       this.world.camera_x = -this.x - 3;
     }, 1000 / 60);
     setInterval(() => {
@@ -138,10 +151,29 @@ class Character extends ColidableObject {
         this.playAnimation(this.animatedDamage);
       } else if (this.world.keyboard.A || this.world.keyboard.D) {
         this.playAnimation(this.animatedMove);
+      } else if (this.isLongIdle()) {
+        this.playAnimation(this.animateLongIdle);
       } else {
         this.handleIdleAnimations();
       }
     }, 180);
+  }
+
+  resetIdleTimer() {
+    this.lastAction = Date.now();
+    this.longIdleActive = false;
+    clearTimeout(this.idleTimer);
+    this.idleTimer = setTimeout(() => {
+      this.longIdleActive = true;
+      if (!this.idleSoundStarted) {
+        this.idleSoundStarted = true;
+        playSound(gameSounds.pepe_idle);
+      }
+    }, 5000);
+  }
+
+  isLongIdle() {
+    return this.longIdleActive && !this.isInAir() && !this.getDamage();
   }
 
   airAnimate() {

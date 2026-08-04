@@ -15,9 +15,16 @@ class ThrowableObject extends ColidableObject {
     "./assets/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
   ];
 
+  isSplashing = false;
+  throwInterval = null;
+  animationInterval = null;
+  splashTimeout = null;
+  splashDuration = 300;
+
   constructor(x, y) {
     super().loadImage(this.animateThrow[0]);
     this.loadImages(this.animateThrow);
+    this.loadImages(this.animateSplash);
     this.x = x;
     this.y = y;
     this.height = 60;
@@ -27,11 +34,40 @@ class ThrowableObject extends ColidableObject {
   }
 
   throw() {
-    setInterval(() => {
-      this.x += 15;
+    this.throwInterval = setInterval(() => {
+      if (!this.isSplashing) {
+        this.x += 15;
+      }
     }, 1000 / 25);
-    setInterval(() => {
-      this.playAnimation(this.animateThrow);
+
+    this.animationInterval = setInterval(() => {
+      if (this.isSplashing) {
+        this.playAnimation(this.animateSplash);
+      } else {
+        this.playAnimation(this.animateThrow);
+      }
     }, 25);
+  }
+
+  startSplash() {
+    if (this.isSplashing) {
+      return;
+    }
+    this.isSplashing = true;
+    this.currentImage = 0;
+    this.playAnimation(this.animateSplash);
+
+    if (this.throwInterval) {
+      clearInterval(this.throwInterval);
+      this.throwInterval = null;
+    }
+
+    if (this.splashTimeout) {
+      clearTimeout(this.splashTimeout);
+    }
+
+    this.splashTimeout = setTimeout(() => {
+      this.readyToRemove = true;
+    }, this.splashDuration);
   }
 }
