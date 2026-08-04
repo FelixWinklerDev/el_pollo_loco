@@ -12,6 +12,8 @@ class World {
   bossHealth = new BossHealthbar();
   winScreen = new Image();
   loseScreen = new Image();
+  checkInterval;
+  animationFrameId;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -37,7 +39,7 @@ class World {
   }
 
   runChecks() {
-    setInterval(() => {
+    this.checkInterval = setInterval(() => {
       this.checkCollision();
       this.checkBottleCollision();
       this.checkThrowItemCollisions();
@@ -198,7 +200,7 @@ class World {
     this.addObjectsToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
     let self = this;
-    requestAnimationFrame(function () {
+    this.animationFrameId = requestAnimationFrame(function () {
       self.draw();
     });
   }
@@ -232,6 +234,14 @@ class World {
   }
 
   stopGame() {
-    for (let i = 1; i < 9999; i++) window.clearInterval(i);
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+    }
+    if (this.checkInterval) {
+      clearInterval(this.checkInterval);
+    }
+    for (let i = 1; i < 9999; i++) {
+      window.clearInterval(i);
+    }
   }
 }

@@ -9,22 +9,22 @@ function closeRotateDeviceDialog() {
   }
 }
 
-window.matchMedia("(orientation: landscape)").addEventListener("change", function(e) {
-  if (e.matches) {
-    const dialog = document.getElementById("rotateDeviceDialog");
-    if (dialog) {
-      dialog.classList.remove("dismissed");
+window
+  .matchMedia("(orientation: landscape)")
+  .addEventListener("change", function (e) {
+    if (e.matches) {
+      const dialog = document.getElementById("rotateDeviceDialog");
+      if (dialog) {
+        dialog.classList.remove("dismissed");
+      }
     }
-  }
-});
+  });
 
 function startGame() {
   gameSounds.menu_music.pause();
   gameSounds.menu_music.currentTime = 0;
   document.getElementById("mainMenu").classList.add("d-none");
-  initateLevel();
-  init();
-  startAllBackgroundMusic();
+  startNewSession();
 }
 
 function restartGame() {
@@ -33,6 +33,10 @@ function restartGame() {
     pauseAllSounds();
     pauseAllBackgroundMusic();
   }
+  startNewSession();
+}
+
+function startNewSession() {
   initateLevel();
   init();
   startAllBackgroundMusic();

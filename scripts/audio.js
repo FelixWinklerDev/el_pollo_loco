@@ -39,12 +39,20 @@ function stopSound(sound) {
 function toggleMute() {
   isMuted = !isMuted;
   let btn = document.getElementById("muteBtn");
+  let img = btn?.querySelector("img");
+
   if (isMuted) {
-    btn.innerText = "SOUNDS: OFF";
+    if (img) {
+      img.src = "./assets/html-img/elionas-speaker-mute-1521312_640.png";
+      img.alt = "music muted";
+    }
     stopSound(gameSounds.menu_music);
     stopSound(gameSounds.boss_music);
   } else {
-    btn.innerText = "SOUNDS: ON";
+    if (img) {
+      img.src = "./assets/html-img/elionas-speaker-1521312_640.png";
+      img.alt = "music toggle";
+    }
     let boss = world.level.enemies.find((e) => e instanceof Boss);
     if (boss && boss.hadFirstContact && !boss.isDead) {
       playSound(gameSounds.boss_music);
