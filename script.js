@@ -47,8 +47,7 @@ function init() {
   world = new World(canvas, keyboard);
 }
 
-window.addEventListener("keypress", (event) => {
-  "key pressed";
+window.addEventListener("keydown", (event) => {
   if (event.code == "KeyA") {
     keyboard.A = true;
   }
@@ -64,7 +63,6 @@ window.addEventListener("keypress", (event) => {
 });
 
 window.addEventListener("keyup", (event) => {
-  "key released";
   if (event.code == "KeyA") {
     keyboard.A = false;
   }
@@ -79,34 +77,73 @@ window.addEventListener("keyup", (event) => {
   }
 });
 
+function bindTouchToKey(elementId, keyboardProperty) {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+  element.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    keyboard[keyboardProperty] = true;
+  });
+  element.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    keyboard[keyboardProperty] = false;
+  });
+}
+
+function setupMobileControls() {
+  bindTouchToKey("btnLeft", "A");
+  bindTouchToKey("btnRight", "D");
+  bindTouchToKey("btnJump", "W");
+  bindTouchToKey("btnThrow", "E");
+}
+
+window.addEventListener("DOMContentLoaded", setupMobileControls);
+
+function closeMobileMenuIfOpen() {
+  const footer = document.getElementById("main-footer");
+  if (footer && footer.classList.contains("mobile-open")) {
+    footer.classList.remove("mobile-open");
+  }
+}
+
+function toggleMobileMenu() {
+  const footer = document.getElementById("main-footer");
+  if (footer) {
+    footer.classList.toggle("mobile-open");
+  }
+}
+
 function openDialog() {
+  closeMobileMenuIfOpen();
   const dialogRef = document.getElementById("aboutUs");
-  dialogRef.showModal();
+  dialogRef?.showModal();
 }
 
 function closeDialog() {
   const dialogRef = document.getElementById("aboutUs");
-  dialogRef.close();
+  dialogRef?.close();
 }
 
 function openHowToPlayDialog() {
+  closeMobileMenuIfOpen();
   const dialogRef = document.getElementById("howToPlay");
-  dialogRef.showModal();
+  dialogRef?.showModal();
 }
 
 function closeHowToPlayDialog() {
   const dialogRef = document.getElementById("howToPlay");
-  dialogRef.close();
+  dialogRef?.close();
 }
 
 function openImprintDialog() {
+  closeMobileMenuIfOpen();
   const dialogRef = document.getElementById("imprint");
-  dialogRef.showModal();
+  dialogRef?.showModal();
 }
 
 function closeImprintDialog() {
   const dialogRef = document.getElementById("imprint");
-  dialogRef.close();
+  dialogRef?.close();
 }
 
 function showStartScreen() {

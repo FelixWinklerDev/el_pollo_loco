@@ -14,6 +14,7 @@ class World {
   loseScreen = new Image();
   checkInterval;
   animationFrameId;
+  endScreenShown = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -27,6 +28,7 @@ class World {
       "./assets/9_intro_outro_screens/game_over/oh_no_you_lost!.png";
     this.gameWon = false;
     this.gameLost = false;
+    this.endScreenShown = false;
   }
 
   setWorld() {
@@ -158,27 +160,35 @@ class World {
 
   checkBossDeath() {
     let boss = this.level.enemies.find((e) => e instanceof Boss);
-    if (boss && boss.isDead) {
+    if (boss && boss.isDead && !this.gameWon) {
+      this.gameWon = true;
       setTimeout(() => {
-        this.gameWon = true;
         this.stopGame();
       }, 2000);
     }
   }
 
   checkGameOver() {
-    if (this.character.health <= 0) {
+    if (this.character.health <= 0 && !this.gameLost) {
+      this.gameLost = true;
       setTimeout(() => {
-        this.gameLost = true;
         this.stopGame();
       }, 2000);
     }
   }
 
+  drawEndScreen() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.translate(this.camera_x, 0);
+    this.addObjectsToMap(this.level.background);
+    this.ctx.translate(-this.camera_x, 0);
+    let img = this.gameWon ? this.winScreen : this.loseScreen;
+    this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+  }
+
   draw() {
-    if (this.gameWon || this.gameLost) {
-      let img = this.gameWon ? this.winScreen : this.loseScreen;
-      this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
+    if (this.endScreenShown) {
+      this.drawEndScreen();
       return;
     }
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -234,6 +244,7 @@ class World {
   }
 
   stopGame() {
+    this.endScreenShown = true;
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
     }
@@ -242,6 +253,9 @@ class World {
     }
     for (let i = 1; i < 9999; i++) {
       window.clearInterval(i);
+    }
+    if (this.gameWon || this.gameLost) {
+      this.drawEndScreen();
     }
   }
 }

@@ -38,7 +38,7 @@
   </head>
   <body>
     <main class="main-wrapper">
-      <header class="d-flex">
+      <header class="header-section">
         <h1>El Pollo Loco</h1>
       </header>
       <div id="game-wrapper">
@@ -49,8 +49,29 @@
           />
         </section>
         <canvas id="gameCanvas" height="480px" width="720px"></canvas>
+        <div id="mobileControls" class="mobile-controls">
+          <div class="control-group left-controls">
+            <button id="btnLeft" class="touch-btn">◀</button>
+            <button id="btnRight" class="touch-btn">▶</button>
+          </div>
+          <div class="control-group right-controls">
+            <button id="btnJump" class="touch-btn">▲</button>
+            <button id="btnThrow" class="touch-btn">🧪</button>
+          </div>
+        </div>
       </div>
       <section class="quick-menu">
+        <div class="burger-menu">
+          <button
+            id="burgerBtn"
+            class="burger-btn"
+            onclick="toggleMobileMenu()"
+          >
+            <div class="seperator"></div>
+            <div class="seperator"></div>
+            <div class="seperator"></div>
+          </button>
+        </div>
         <button class="menu-btn" id="playBtn" onclick="startGame()">
           <img
             class="icons"
@@ -72,7 +93,7 @@
             alt="music toggle"
           />
         </button>
-        <button class="menu-btn" onclick="openFullscreen()">
+        <button class="menu-btn" id="fullScreenBtn" onclick="openFullscreen()">
           <img
             class="icons"
             src="./assets/html-img/coffeebeanworks-icon-1968238_640.png"
@@ -80,7 +101,8 @@
           />
         </button>
       </section>
-      <footer>
+      <footer id="main-footer">
+        <button class="close-menu-btn" onclick="toggleMobileMenu()">✕</button>
         <div class="footer-wrapper">
           <a href="#aboutUs" onclick="openDialog()">About us</a>
           <a href="#imprint" onclick="openImprintDialog()">Imprint</a>

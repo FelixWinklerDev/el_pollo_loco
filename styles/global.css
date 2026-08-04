@@ -99,3 +99,20 @@ ul {
   font-size: 1.6rem;
   color: white;
 }
+
+@media screen and (max-height: 520px) and (orientation: landscape) {
+  footer {
+    display: none;
+    overflow: hidden;
+  }
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+  }
+}

@@ -22,7 +22,6 @@ gameSounds.menu_music.loop = true;
 gameSounds.boss_music.loop = true;
 gameSounds.pepe_idle.loop = true;
 
-// audio.js
 function playSound(sound) {
   if (isMuted) {
     return;
