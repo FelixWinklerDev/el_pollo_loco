@@ -43,26 +43,6 @@ class ColidableObject extends MoveableObject {
     return this.health == 0;
   }
 
-  showHitbox(ctx) {
-    if (
-      this instanceof Character ||
-      this instanceof Chicken ||
-      this instanceof Boss ||
-      this instanceof Bottle
-    ) {
-      ctx.beginPath();
-      ctx.lineWidth = "2";
-      ctx.strokeStyle = "green";
-      ctx.rect(
-        this.x + this.offset.left,
-        this.y + this.offset.top,
-        this.width - this.offset.left - this.offset.right,
-        this.height - this.offset.top - this.offset.bottom,
-      );
-      ctx.stroke();
-    }
-  }
-
   jump() {
     this.speedY = 20;
     playSound(gameSounds.jump_sound)

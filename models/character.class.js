@@ -162,6 +162,11 @@ class Character extends ColidableObject {
   resetIdleTimer() {
     this.lastAction = Date.now();
     this.longIdleActive = false;
+    if (this.idleSoundStarted) {
+      gameSounds.pepe_idle.pause();
+      gameSounds.pepe_idle.currentTime = 0;
+      this.idleSoundStarted = false;
+    }
     clearTimeout(this.idleTimer);
     this.idleTimer = setTimeout(() => {
       this.longIdleActive = true;
