@@ -4,6 +4,7 @@ body {
   width: 100%;
   font-size: 62.5%;
   background-image: url(../assets/html-img/raniramli-desert-5396906_1920.jpg);
+  background-position: center;
   background-size: cover;
 }
 
@@ -106,7 +107,7 @@ ul {
     overflow: hidden;
   }
 
-body {
+  body {
     display: flex;
     justify-content: center;
     align-items: center;

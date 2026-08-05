@@ -49,7 +49,7 @@ class World {
       this.checkBottleOutOfCam();
       this.checkBossDeath();
       this.checkGameOver();
-    }, 50);
+    }, 25);
   }
 
   checkCollision() {
@@ -119,7 +119,6 @@ class World {
 
   bottleHit(enemy, bottle) {
     enemy.hit(10);
-
     if (enemy instanceof Boss) {
       this.bossHealth.setPercentage(enemy.energy);
       playSound(gameSounds.boss_hit);
@@ -163,6 +162,7 @@ class World {
     if (boss && boss.isDead && !this.gameWon) {
       this.gameWon = true;
       setTimeout(() => {
+        playWinMusic();
         this.stopGame();
       }, 2000);
     }
@@ -172,6 +172,7 @@ class World {
     if (this.character.health <= 0 && !this.gameLost) {
       this.gameLost = true;
       setTimeout(() => {
+        playGameOverMusic();
         this.stopGame();
       }, 2000);
     }

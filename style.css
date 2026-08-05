@@ -201,7 +201,7 @@
   }
 }
 
-@media screen and (max-height: 500px) and (orientation: landscape) {
+@media screen and (max-height: 840px) and (orientation: landscape) and (pointer: coarse) {
   #game-wrapper {
     width: auto;
     height: 100vh;
@@ -231,6 +231,11 @@
     padding: 15px 25px;
     pointer-events: none;
     z-index: 20;
+  }
+
+  .right-controlls,
+  .left-controlls {
+    margin-bottom: 30px;
   }
 
   .burger-menu {
@@ -313,5 +318,9 @@
   .close-menu-btn:active {
     transform: scale(0.9);
     color: #ff9800;
+  }
+
+  .menu-img {
+    object-fit: contain;
   }
 }

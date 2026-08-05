@@ -14,13 +14,37 @@ const gameSounds = {
   pepe_hurt: new Audio("./assets/audio/hurt.mp3"),
   pepe_death: new Audio("./assets/audio/falling-scream.mp3"),
   pepe_idle: new Audio("./assets/audio/snoring-long.mp3"),
+  victory: new Audio("./assets/audio/victory-sound.mp3"),
+  game_over: new Audio("./assets/audio/game-over.mp3"),
 };
+
 let musicStarted = false;
-let isMuted = false;
+let isMuted = localStorage.getItem("isMuted") === "true";
 
 gameSounds.menu_music.loop = true;
 gameSounds.boss_music.loop = true;
 gameSounds.pepe_idle.loop = true;
+
+document.addEventListener("DOMContentLoaded", () => {
+  applyMuteState();
+});
+
+function applyMuteState() {
+  Object.values(gameSounds).forEach((sound) => {
+    sound.muted = isMuted;
+  });
+  let btn = document.getElementById("muteBtn");
+  let img = btn?.querySelector("img");
+  if (img) {
+    if (isMuted) {
+      img.src = "./assets/html-img/elionas-speaker-mute-1521312_640.png";
+      img.alt = "music muted";
+    } else {
+      img.src = "./assets/html-img/elionas-speaker-1521312_640.png";
+      img.alt = "music toggle";
+    }
+  }
+}
 
 function playSound(sound) {
   if (isMuted) {
@@ -36,23 +60,17 @@ function stopSound(sound) {
 }
 
 function toggleMute() {
+  if (document.activeElement) {
+    document.activeElement.blur();
+  }
   isMuted = !isMuted;
-  let btn = document.getElementById("muteBtn");
-  let img = btn?.querySelector("img");
-
+  localStorage.setItem("isMuted", isMuted);
+  applyMuteState();
   if (isMuted) {
-    if (img) {
-      img.src = "./assets/html-img/elionas-speaker-mute-1521312_640.png";
-      img.alt = "music muted";
-    }
     stopSound(gameSounds.menu_music);
     stopSound(gameSounds.boss_music);
   } else {
-    if (img) {
-      img.src = "./assets/html-img/elionas-speaker-1521312_640.png";
-      img.alt = "music toggle";
-    }
-    let boss = world.level.enemies.find((e) => e instanceof Boss);
+    let boss = world?.level?.enemies?.find((e) => e instanceof Boss);
     if (boss && boss.hadFirstContact && !boss.isDead) {
       playSound(gameSounds.boss_music);
     } else {
@@ -80,6 +98,8 @@ function pauseAllSounds() {
   gameSounds.pepe_hurt.pause();
   gameSounds.pepe_death.pause();
   gameSounds.pepe_idle.pause();
+  gameSounds.victory.pause();
+  gameSounds.game_over.pause();
 }
 
 function startAllBackgroundMusic() {
@@ -100,4 +120,14 @@ function switchToBossMusic() {
   }
   pauseAllBackgroundMusic();
   playSound(gameSounds.boss_music);
+}
+
+function playWinMusic() {
+  pauseAllBackgroundMusic();
+  playSound(gameSounds.victory);
+}
+
+function playGameOverMusic() {
+  pauseAllBackgroundMusic();
+  playSound(gameSounds.game_over);
 }

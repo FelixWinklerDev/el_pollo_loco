@@ -21,6 +21,9 @@ window
   });
 
 function startGame() {
+  if (document.activeElement) {
+    document.activeElement.blur();
+  }
   gameSounds.menu_music.pause();
   gameSounds.menu_music.currentTime = 0;
   document.getElementById("mainMenu").classList.add("d-none");
@@ -28,6 +31,9 @@ function startGame() {
 }
 
 function restartGame() {
+  if (document.activeElement) {
+    document.activeElement.blur();
+  }
   if (world) {
     world.stopGame();
     pauseAllSounds();
@@ -37,6 +43,10 @@ function restartGame() {
 }
 
 function startNewSession() {
+  if (world) {
+    world.stopGame();
+  }
+  pauseAllSounds();
   initateLevel();
   init();
   startAllBackgroundMusic();
