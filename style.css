@@ -147,6 +147,8 @@
 
 .icons:hover {
   transform: scale(1.2);
+  filter: grayscale(0);
+  background-color: #ff9800;
 }
 
 .d-flex {
