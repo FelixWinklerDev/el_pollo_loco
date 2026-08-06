@@ -102,7 +102,6 @@ class Character extends ColidableObject {
 
   animate() {
     this.resetIdleTimer();
-
     setInterval(() => {
       if (this.isDead() && !this.deathSequenceStarted) {
         this.deathSequenceStarted = true;

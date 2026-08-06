@@ -108,6 +108,9 @@ function setupMobileControls() {
 }
 
 window.addEventListener("DOMContentLoaded", setupMobileControls);
+document.addEventListener("DOMContentLoaded", () => {
+  applyControlsVisibility();
+});
 
 function closeMobileMenuIfOpen() {
   const footer = document.getElementById("main-footer");
@@ -120,6 +123,29 @@ function toggleMobileMenu() {
   const footer = document.getElementById("main-footer");
   if (footer) {
     footer.classList.toggle("mobile-open");
+  }
+}
+
+let controlsHidden = localStorage.getItem("controlsHidden") === "true";
+
+function toggleControlGroups() {
+  if (document.activeElement) {
+    document.activeElement.blur();
+  }
+  controlsHidden = !controlsHidden;
+  localStorage.setItem("controlsHidden", controlsHidden);
+  applyControlsVisibility();
+}
+
+function applyControlsVisibility() {
+  const mobileControls = document.querySelector(".mobile-controls");
+  const toggleBtn = document.getElementById("toggle-controlls");
+  if (mobileControls) {
+    if (controlsHidden) {
+      mobileControls.classList.add("d-none");
+    } else {
+      mobileControls.classList.remove("d-none");
+    }
   }
 }
 
@@ -145,14 +171,15 @@ function closeHowToPlayDialog() {
   dialogRef?.close();
 }
 
-function openImprintDialog() {
+function openImprintDialog(event) {
+  if (event) event.preventDefault();
   closeMobileMenuIfOpen();
-  const dialogRef = document.getElementById("imprint");
+  const dialogRef = document.getElementById("imprint-dialog");
   dialogRef?.showModal();
 }
 
 function closeImprintDialog() {
-  const dialogRef = document.getElementById("imprint");
+  const dialogRef = document.getElementById("imprint-dialog");
   dialogRef?.close();
 }
 

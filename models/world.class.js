@@ -53,28 +53,34 @@ class World {
   }
 
   checkCollision() {
-    this.level.enemies.forEach((enemy, index) => {
+    for (let i = this.level.enemies.length - 1; i >= 0; i--) {
+      const enemy = this.level.enemies[i];
       if (this.character.collidingHitbox(enemy) && enemy.energy > 0) {
-        this.handleCharacterEnemyCollision(enemy);
+        const isStomped = this.handleCharacterEnemyCollision(enemy);
+        if (isStomped) {
+          break;
+        }
       }
       if (enemy.readyToRemove) {
-        this.level.enemies.splice(index, 1);
+        this.level.enemies.splice(i, 1);
       }
-    });
+    }
   }
 
   handleCharacterEnemyCollision(enemy) {
     if (this.stomped(enemy)) {
       enemy.hit();
       this.character.speedY = 15;
+      this.character.lastHit = new Date().getTime();
       playSound(gameSounds.bounce_sound);
-      return;
+      return true;
     }
     if (!this.character.getDamage()) {
       this.character.hit();
       playSound(gameSounds.pepe_hurt);
       this.statusBar.setPercentage(this.character.health);
     }
+    return false;
   }
 
   stomped(enemy) {

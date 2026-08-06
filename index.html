@@ -49,7 +49,7 @@
           />
         </section>
         <canvas id="gameCanvas" height="480px" width="720px"></canvas>
-        <div id="mobileControls" class="mobile-controls">
+        <div id="mobileControls" class="mobile-controls d-flex">
           <div class="control-group left-controls">
             <button id="btnLeft" class="touch-btn">◀</button>
             <button id="btnRight" class="touch-btn">▶</button>
@@ -61,6 +61,16 @@
         </div>
       </div>
       <section class="quick-menu">
+        <a
+          class="mobile-imprint"
+          id="mobileImprint"
+          href="#imprint"
+          onclick="openImprintDialog(event)"
+          ><img
+            class="icons"
+            src="./assets/html-img/texler-a-book-2427337_640.png"
+            alt="imprint icon"
+        /></a>
         <div class="burger-menu">
           <button
             id="burgerBtn"
@@ -90,23 +100,43 @@
           <img
             class="icons"
             src="./assets/html-img/elionas-speaker-1521312_640.png"
-            alt="music toggle"
+            alt="music toggle button"
           />
         </button>
         <button class="menu-btn" id="fullScreenBtn" onclick="openFullscreen()">
           <img
             class="icons"
             src="./assets/html-img/coffeebeanworks-icon-1968238_640.png"
-            alt=""
+            alt="fullscreen button"
+          />
+        </button>
+        <button
+          class="menu-btn"
+          id="toggle-controlls"
+          onclick="toggleControlGroups()"
+        >
+          <img
+            class="icons"
+            src="./assets/html-img/io-images-controller-1784573_640.png"
+            alt="control button"
           />
         </button>
       </section>
       <footer id="main-footer">
         <button class="close-menu-btn" onclick="toggleMobileMenu()">✕</button>
         <div class="footer-wrapper">
-          <a href="#aboutUs" onclick="openDialog()">About us</a>
-          <a href="#imprint" onclick="openImprintDialog()">Imprint</a>
-          <a href="#howToPlay" onclick="openHowToPlayDialog()">How To Play</a>
+          <a class="footer-links" href="#aboutMe" onclick="openDialog()"
+            >About me</a
+          >
+          <a class="footer-links" href="#imprint" onclick="openImprintDialog()"
+            >Imprint</a
+          >
+          <a
+            class="footer-links"
+            href="#howToPlay"
+            onclick="openHowToPlayDialog()"
+            >How To Play</a
+          >
         </div>
       </footer>
       <dialog id="howToPlay">
@@ -116,28 +146,30 @@
           </button>
         </section>
         <section>
-          <table>
-            <tr>
-              <th class="firstChild">Key</th>
-              <th>Action</th>
-            </tr>
-            <tr>
-              <td>A</td>
-              <td>Move Left</td>
-            </tr>
-            <tr>
-              <td>D</td>
-              <td>Move Right</td>
-            </tr>
-            <tr>
-              <td>W</td>
-              <td>Jump</td>
-            </tr>
-            <tr>
-              <td>E</td>
-              <td>Throw Bottle</td>
-            </tr>
-          </table>
+          <div class="table-container">
+            <table>
+              <tr>
+                <th class="firstChild">Key</th>
+                <th>Action</th>
+              </tr>
+              <tr>
+                <td>A</td>
+                <td>Move Left</td>
+              </tr>
+              <tr>
+                <td>D</td>
+                <td>Move Right</td>
+              </tr>
+              <tr>
+                <td>W</td>
+                <td>Jump</td>
+              </tr>
+              <tr>
+                <td>E</td>
+                <td>Throw Bottle</td>
+              </tr>
+            </table>
+          </div>
           <p>here some quick tipps before starting:</p>
           <p>You can kill chickens easily by jumping on their heads.</p>
           <p>
@@ -151,19 +183,14 @@
     </main>
     <div id="rotateDeviceDialog">
       <section class="dialog-content-inner">
-        <h2>Please rotate your device</h2>
-        <p>
-          Please switch your device from portrait to landscape mode for the best
-          experience.
-        </p>
         <video autoplay loop muted playsinline class="rotate-gif">
-          <source src="./assets/html-img/240570_tiny.mp4" type="video/mp4" />
+          <source src="./assets/html-img/240570_medium.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </section>
     </div>
     <section class="dialog-content">
-      <dialog id="aboutUs">
+      <dialog id="aboutMe">
         <section class="d-flex right-bound">
           <button id="exitBtn" onclick="closeDialog()"><p>X</p></button>
         </section>
@@ -194,7 +221,7 @@
       </dialog>
     </section>
     <section class="imprint-dialog-content">
-      <dialog id="imprint">
+      <dialog id="imprint-dialog">
         <section class="d-flex right-bound">
           <button id="exitBtn" onclick="closeImprintDialog()"><p>X</p></button>
         </section>

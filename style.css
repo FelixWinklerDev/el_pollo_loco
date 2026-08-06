@@ -12,6 +12,14 @@
   display: flex;
 }
 
+.d-none {
+  display: none;
+}
+
+.d-flex {
+  display: flex;
+}
+
 .seperator {
   height: 3px;
   width: 20px;
@@ -69,12 +77,12 @@
   gap: 230px;
 }
 
-#aboutUs,
-#imprint,
+#aboutMe,
+#imprint-dialog,
 #howToPlay {
   height: 100%;
   width: 100%;
-  background-color: rgb(165, 105, 40);
+  background-color: #ff9800;
   padding: 24px;
   z-index: 1000;
   border: none;
@@ -83,6 +91,12 @@
 
 #exitBtn {
   background-color: #ffffff00;
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #game-wrapper {
@@ -98,6 +112,8 @@
 
 #gameCanvas {
   display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .menu-container {
@@ -121,10 +137,19 @@
   margin-top: 50px;
 }
 
-.menu-img {
+#mainMenu {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  z-index: 10;
+}
+
+.menu-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .menu-btn {
@@ -175,31 +200,85 @@
 }
 
 .mobile-controls {
-  display: none;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: absolute;
+  inset: 0;
+  padding: 15px 25px;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.control-group {
+  display: flex;
+  gap: 12px;
+  pointer-events: auto;
+}
+
+.touch-btn {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  font-size: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.touch-btn:active {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(0.95);
+  text-decoration: none;
 }
 
 .burger-menu {
   display: none;
 }
 
+.mobile-imprint {
+  display: none;
+}
+
+#main-footer {
+  display: flex;
+  inset: 0;
+}
+
+#main-footer.mobile-open {
+  display: flex;
+}
+
 @media screen and (orientation: portrait) and (max-width: 1023px) {
   #rotateDeviceDialog:not(.dismissed) {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: fixed;
-    padding: 25px;
     inset: 0;
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.9);
     z-index: 9999;
+    box-sizing: border-box;
+    padding: 0;
   }
 
   .rotate-gif {
-    width: 360px;
+    width: 100%;
+    max-width: 960px;
     height: auto;
-    margin: 20px auto;
     display: block;
+    margin: 0;
+  }
+
+  .quick-menu {
+    margin-top: 10px;
   }
 }
 
@@ -224,22 +303,6 @@
     display: none;
   }
 
-  .mobile-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    position: absolute;
-    inset: 0;
-    padding: 15px 25px;
-    pointer-events: none;
-    z-index: 20;
-  }
-
-  .right-controlls,
-  .left-controlls {
-    margin-bottom: 30px;
-  }
-
   .burger-menu {
     display: flex;
   }
@@ -248,32 +311,8 @@
     display: none;
   }
 
-  .control-group {
-    display: flex;
-    gap: 12px;
-    pointer-events: auto;
-  }
-
-  .touch-btn {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    background: rgba(0, 0, 0, 0.4);
-    color: white;
-    font-size: 22px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-  }
-
-  .touch-btn:active {
-    background: rgba(255, 255, 255, 0.4);
-    transform: scale(0.95);
-    text-decoration: none;
+  #toggle-controlls {
+    display: none;
   }
 
   #main-footer {
@@ -295,13 +334,14 @@
   .footer-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 30px;
     align-items: center;
     justify-content: center;
     width: 100%;
   }
 
-  .footer-wrapper a {
+  #main-footer #howToPlay,
+  #main-footer #aboutMe {
     background-color: rgb(165, 105, 40);
     color: #fff;
     text-decoration: none;
@@ -324,5 +364,15 @@
 
   .menu-img {
     object-fit: contain;
+  }
+
+  .mobile-imprint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #main-footer #imprint {
+    display: none;
   }
 }
