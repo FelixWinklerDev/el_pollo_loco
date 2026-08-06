@@ -16,6 +16,7 @@ class ThrowableObject extends ColidableObject {
   ];
 
   isSplashing = false;
+  isFalling = false;
   throwInterval = null;
   animationInterval = null;
   splashTimeout = null;
@@ -29,7 +30,8 @@ class ThrowableObject extends ColidableObject {
     this.y = y;
     this.height = 60;
     this.width = 50;
-    this.speedY = 30;
+    this.speedY = 0;
+    this.acceleration = 0.25;
     this.throw();
   }
 
@@ -37,9 +39,17 @@ class ThrowableObject extends ColidableObject {
     this.throwInterval = setInterval(() => {
       if (!this.isSplashing) {
         this.x += 15;
+        if (this.isFalling && !this.isInAir()) {
+          this.startSplash();
+        }
       }
     }, 1000 / 25);
-
+    setTimeout(() => {
+      if (!this.isSplashing) {
+        this.isFalling = true;
+        this.applyGravity();
+      }
+    }, 800);
     this.animationInterval = setInterval(() => {
       if (this.isSplashing) {
         this.playAnimation(this.animateSplash);
@@ -49,25 +59,28 @@ class ThrowableObject extends ColidableObject {
     }, 25);
   }
 
+  splashDuration = 500;
+
   startSplash() {
     if (this.isSplashing) {
       return;
     }
     this.isSplashing = true;
     this.currentImage = 0;
-    this.playAnimation(this.animateSplash);
-
     if (this.throwInterval) {
       clearInterval(this.throwInterval);
       this.throwInterval = null;
     }
-
-    if (this.splashTimeout) {
-      clearTimeout(this.splashTimeout);
-    }
-
-    this.splashTimeout = setTimeout(() => {
+    setTimeout(() => {
+      if (this.animationInterval) {
+        clearInterval(this.animationInterval);
+        this.animationInterval = null;
+      }
       this.readyToRemove = true;
     }, this.splashDuration);
+  }
+
+  isInAir() {
+    return this.y < 360;
   }
 }

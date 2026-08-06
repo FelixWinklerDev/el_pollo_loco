@@ -144,13 +144,13 @@ class World {
     }, delay);
   }
 
-  checkBottleOutOfCam() {
-    this.throwableObjects.forEach((bottle) => {
-      if (bottle.x > -this.camera_x + 720 || bottle.x < -this.camera_x - 100) {
-        this.removeThrowableObject(bottle);
-      }
-    });
-  }
+checkBottleOutOfCam() {
+  this.throwableObjects.forEach((bottle) => {
+    if (bottle.x > -this.camera_x + 800 || bottle.x < -this.camera_x - 100) {
+      this.removeThrowableObject(bottle);
+    }
+  });
+}
 
   checkCoinCollision() {
     this.level.coins.forEach((coin, index) => {

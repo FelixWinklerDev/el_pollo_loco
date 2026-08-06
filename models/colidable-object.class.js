@@ -45,7 +45,7 @@ class ColidableObject extends MoveableObject {
 
   jump() {
     this.speedY = 20;
-    playSound(gameSounds.jump_sound)
+    playSound(gameSounds.jump_sound);
   }
 
   moveLeft() {
@@ -64,18 +64,17 @@ class ColidableObject extends MoveableObject {
     this.mirrored = false;
   }
 
-  applyGravity() {
-    if (this instanceof ThrowableObject) {
-      return true;
-    } else {
-      setInterval(() => {
-        if (this.isInAir() || this.speedY > 0) {
-          this.y -= this.speedY;
-          this.speedY -= this.acceleration;
-        }
-      }, 1000 / 25);
+applyGravity() {
+  setInterval(() => {
+    if (this instanceof ThrowableObject && !this.isFalling) {
+      return;
     }
-  }
+    if (this.isInAir() || this.speedY > 0) {
+      this.y -= this.speedY;
+      this.speedY -= this.acceleration;
+    }
+  }, 1000 / 25);
+}
 
   isInAir() {
     return this.y < 140;
