@@ -199,10 +199,11 @@ checkBottleOutOfCam() {
       return;
     }
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.translate(this.camera_x, 0);
+    let roundedCameraX = Math.round(this.camera_x);
+    this.ctx.translate(roundedCameraX, 0);
     this.addObjectsToMap(this.level.background);
     this.addObjectsToMap(this.level.cloud);
-    this.ctx.translate(-this.camera_x, 0);
+    this.ctx.translate(-roundedCameraX, 0);
     this.addToMap(this.statusBar);
     this.addToMap(this.bottleCounter);
     this.addToMap(this.coinCounter);

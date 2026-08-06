@@ -58,18 +58,19 @@ function initateLevel() {
       new Coin(1800, 180),
       new Coin(1900, 160),
     ],
-    [new BackgroundObject("./assets/5_background/layers/air.png", -719),
+    [
+      new BackgroundObject("./assets/5_background/layers/air.png", -720),
       new BackgroundObject(
         "./assets/5_background/layers/3_third_layer/2.png",
-        -719,
+        -720,
       ),
       new BackgroundObject(
         "./assets/5_background/layers/2_second_layer/2.png",
-        -719,
+        -720,
       ),
       new BackgroundObject(
         "./assets/5_background/layers/1_first_layer/2.png",
-        -719,
+        -720,
       ),
       new BackgroundObject("./assets/5_background/layers/air.png", 0),
       new BackgroundObject(
@@ -84,70 +85,70 @@ function initateLevel() {
         "./assets/5_background/layers/1_first_layer/1.png",
         0,
       ),
-      new BackgroundObject("./assets/5_background/layers/air.png", 719),
+      new BackgroundObject("./assets/5_background/layers/air.png", 720),
       new BackgroundObject(
         "./assets/5_background/layers/3_third_layer/2.png",
-        719,
+        720,
       ),
       new BackgroundObject(
         "./assets/5_background/layers/2_second_layer/2.png",
-        719,
+        720,
       ),
       new BackgroundObject(
         "./assets/5_background/layers/1_first_layer/2.png",
-        719,
+        720,
       ),
-      new BackgroundObject("./assets/5_background/layers/air.png", 1437),
+      new BackgroundObject("./assets/5_background/layers/air.png", 1440),
       new BackgroundObject(
         "./assets/5_background/layers/3_third_layer/1.png",
-        1437,
+        1440,
       ),
       new BackgroundObject(
         "./assets/5_background/layers/2_second_layer/1.png",
-        1437,
+        1440,
       ),
       new BackgroundObject(
         "./assets/5_background/layers/1_first_layer/1.png",
-        1437,
+        1440,
       ),
-      new BackgroundObject("./assets/5_background/layers/air.png", 2156),
+      new BackgroundObject("./assets/5_background/layers/air.png", 2160),
       new BackgroundObject(
         "./assets/5_background/layers/3_third_layer/2.png",
-        2156,
+        2160,
       ),
       new BackgroundObject(
         "./assets/5_background/layers/2_second_layer/2.png",
-        2156,
+        2160,
       ),
       new BackgroundObject(
         "./assets/5_background/layers/1_first_layer/2.png",
-        2156,
+        2160,
       ),
-      new BackgroundObject("./assets/5_background/layers/air.png", 2875),
+      new BackgroundObject("./assets/5_background/layers/air.png", 2880),
       new BackgroundObject(
         "./assets/5_background/layers/3_third_layer/1.png",
-        2875,
+        2880,
       ),
       new BackgroundObject(
         "./assets/5_background/layers/2_second_layer/1.png",
-        2875,
+        2880,
       ),
       new BackgroundObject(
         "./assets/5_background/layers/1_first_layer/1.png",
-        2875,
+        2880,
       ),
-      new BackgroundObject("./assets/5_background/layers/air.png", 3594),
+      new BackgroundObject("./assets/5_background/layers/air.png", 3600),
       new BackgroundObject(
         "./assets/5_background/layers/3_third_layer/2.png",
-        3594,
+        3600,
       ),
       new BackgroundObject(
         "./assets/5_background/layers/2_second_layer/2.png",
-        3594,
+        3600,
       ),
       new BackgroundObject(
         "./assets/5_background/layers/1_first_layer/2.png",
-        3594,
+        3600,
       ),
     ],
   );
