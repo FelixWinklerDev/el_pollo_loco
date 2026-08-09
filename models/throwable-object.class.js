@@ -37,6 +37,7 @@ class ThrowableObject extends ColidableObject {
 
   throw() {
     this.throwInterval = setInterval(() => {
+      if (world && world.isPaused) return;
       if (!this.isSplashing) {
         this.x += 15;
         if (this.isFalling && !this.isInAir()) {
@@ -45,12 +46,14 @@ class ThrowableObject extends ColidableObject {
       }
     }, 1000 / 25);
     setTimeout(() => {
+      if (world && world.isPaused) return;
       if (!this.isSplashing) {
         this.isFalling = true;
         this.applyGravity();
       }
     }, 800);
     this.animationInterval = setInterval(() => {
+      if (world && world.isPaused) return;
       if (this.isSplashing) {
         this.playAnimation(this.animateSplash);
       } else {

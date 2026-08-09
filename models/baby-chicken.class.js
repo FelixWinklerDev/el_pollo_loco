@@ -35,6 +35,7 @@ class BabyChicken extends ColidableObject {
   animate() {
     this.moveLeft();
     setInterval(() => {
+      if (world && world.isPaused) return;
       if (this.energy > 0) {
         this.playAnimation(this.animatedWalk);
       }

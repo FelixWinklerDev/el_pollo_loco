@@ -80,17 +80,36 @@
 #aboutMe,
 #imprint-dialog,
 #howToPlay {
-  height: 100%;
-  width: 100%;
   background-color: #ff9800;
   padding: 24px;
   z-index: 1000;
   border: none;
   scrollbar-width: none;
+  box-sizing: border-box;
 }
 
-#exitBtn {
-  background-color: #ffffff00;
+#aboutMe[open],
+#imprint-dialog[open],
+#howToPlay[open] {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+.exit-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.content-limitation {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .table-container {

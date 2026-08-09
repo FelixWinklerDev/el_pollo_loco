@@ -46,6 +46,7 @@
           <img
             class="menu-img"
             src="./assets/9_intro_outro_screens/start/startscreen_1.png"
+            alt="startscreen"
           />
         </section>
         <canvas id="gameCanvas" height="480px" width="720px"></canvas>
@@ -89,6 +90,13 @@
             alt="play button"
           />
         </button>
+        <button class="menu-btn" id="pauseBtn" onclick="togglePauseGame()">
+          <img
+            class="icons"
+            src="./assets/html-img/texler-break-2398780_640.png"
+            alt="pause button"
+          />
+        </button>
         <button class="menu-btn" id="restartBtn" onclick="restartGame()">
           <img
             class="icons"
@@ -122,6 +130,7 @@
           />
         </button>
       </section>
+
       <footer id="main-footer">
         <button class="close-menu-btn" onclick="toggleMobileMenu()">✕</button>
         <div class="footer-wrapper">
@@ -139,140 +148,153 @@
           >
         </div>
       </footer>
+
+      <!-- DIALOGS -->
       <dialog id="howToPlay">
-        <section class="right-bound d-flex">
-          <button id="exitBtn" onclick="closeHowToPlayDialog()">
-            <p>X</p>
-          </button>
+        <div class="content-limitation">
+          <section class="right-bound d-flex">
+            <button class="exit-btn" onclick="closeHowToPlayDialog()">
+              <p>X</p>
+            </button>
+          </section>
+          <section>
+            <div class="table-container">
+              <table>
+                <tr>
+                  <th class="firstChild">Key</th>
+                  <th>Action</th>
+                </tr>
+                <tr>
+                  <td>A</td>
+                  <td>Move Left</td>
+                </tr>
+                <tr>
+                  <td>D</td>
+                  <td>Move Right</td>
+                </tr>
+                <tr>
+                  <td>W</td>
+                  <td>Jump</td>
+                </tr>
+                <tr>
+                  <td>E</td>
+                  <td>Throw Bottle</td>
+                </tr>
+              </table>
+            </div>
+            <p>here some quick tipps before starting:</p>
+            <p>You can kill chickens easily by jumping on their heads.</p>
+            <p>
+              Save your bottles for the Boss Fight! She is a ranged boss, so
+              watch out.
+            </p>
+            <p>Collect coins to boost your highscore!</p>
+            <p>There is nothing left to say but good luck and have fun!</p>
+          </section>
+        </div>
+      </dialog>
+
+      <div id="rotateDeviceDialog">
+        <section class="dialog-content-inner">
+          <video autoplay loop muted playsinline class="rotate-gif">
+            <source
+              src="./assets/html-img/240570_medium.mp4"
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
         </section>
-        <section>
-          <div class="table-container">
-            <table>
-              <tr>
-                <th class="firstChild">Key</th>
-                <th>Action</th>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>Move Left</td>
-              </tr>
-              <tr>
-                <td>D</td>
-                <td>Move Right</td>
-              </tr>
-              <tr>
-                <td>W</td>
-                <td>Jump</td>
-              </tr>
-              <tr>
-                <td>E</td>
-                <td>Throw Bottle</td>
-              </tr>
-            </table>
-          </div>
-          <p>here some quick tipps before starting:</p>
-          <p>You can kill chickens easily by jumping on their heads.</p>
+      </div>
+
+      <dialog id="aboutMe">
+        <div class="content-limitation">
+          <section class="d-flex right-bound">
+            <button class="exit-btn" onclick="closeDialog()"><p>X</p></button>
+          </section>
+          <header>
+            <h2>Meet the Developer</h2>
+            <p>
+              Hi there! I'm a passionate developer who loves turning complex
+              logic into interactive experiences. My latest project, El Pollo
+              Loco, was to push my technical boundaries and see just how much I
+              could accomplish in a view days.
+            </p>
+            <h2>About the Project</h2>
+            <p>
+              <b>El Pollo Loco</b> is a fast-paced browser game developed in
+              just 15 days. The assets and graphics are from the talented design
+              team at the <b>Developer Akademie</b>.
+            </p>
+            <h2>What I Learned</h2>
+            <p>
+              This project was more than just a race against the clock. It was a
+              deep dive into the world of Object-Oriented Programming (OOP). I
+              learned much about Classes and Inheritance, Encapsulation and
+              Maintainable Architecture. Stepping away from simple scripts and
+              moving into a structured, object-oriented mindset was a big "level
+              up" of this journey. Enjoy the game!
+            </p>
+          </header>
+        </div>
+      </dialog>
+
+      <dialog id="imprint-dialog">
+        <div class="content-limitation">
+          <section class="d-flex right-bound">
+            <button class="exit-btn" onclick="closeImprintDialog()">
+              <p>X</p>
+            </button>
+          </section>
+          <h1>Legal Notice / Credits</h1>
+          <h2>General Information:</h2>
           <p>
-            Save your bottles for the Boss Fight! She is a ranged boss, so watch
-            out.
+            This website and game were developed solely for educational and
+            non-commercial purposes as part of an Object-Oriented Programming
+            (OOP) learning project.
           </p>
-          <p>Collect coins to boost your highscore!</p>
-          <p>There is nothing left to say but good luck and have fun!</p>
-        </section>
+          <ul>
+            <li>Developer: Felix Winkler</li>
+            <li>Address: Poetenweg 63 06773 Gräfenhainichen</li>
+            <li>Contact: Felixwinklerdev@gmail.com</li>
+            <li>Project Type: Educational 2D Browser Game (OOP Project)</li>
+          </ul>
+          <h2>Intellectual Property & Media Credits:</h2>
+          <h3>1. Game Graphics & Visual Assets</h3>
+          <ul>
+            <li>
+              The 2D in-game graphics and visual assets were provided
+              exclusively for educational use by the design team of Developer
+              Akademie.
+            </li>
+            <li>
+              All rights to these graphics remain with the original creators and
+              design team.
+            </li>
+          </ul>
+          <h3>2. Sound Effects & Icons</h3>
+          <ul>
+            <li>
+              The sound effects and external icons (outside the core gameplay)
+              used in this project were sourced from Pixabay under the Pixabay
+              Content License.
+            </li>
+          </ul>
+          <h2>Disclaimer</h2>
+          <h2>Non-Commercial Use</h2>
+          <p>
+            This project is completely non-commercial. No monetary profit is
+            being generated from this website or game.
+          </p>
+          <h2>Content & External Links</h2>
+          <p>
+            While this project was created with the utmost care, no liability is
+            assumed for the correctness, completeness, or topicality of the
+            provided content. If this site contains links to external websites,
+            we have no influence over their content and cannot accept liability
+            for external links.
+          </p>
+        </div>
       </dialog>
     </main>
-    <div id="rotateDeviceDialog">
-      <section class="dialog-content-inner">
-        <video autoplay loop muted playsinline class="rotate-gif">
-          <source src="./assets/html-img/240570_medium.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </section>
-    </div>
-    <section class="dialog-content">
-      <dialog id="aboutMe">
-        <section class="d-flex right-bound">
-          <button id="exitBtn" onclick="closeDialog()"><p>X</p></button>
-        </section>
-        <header>
-          <h2>Meet the Developer</h2>
-          <p>
-            Hi there! I'm a passionate developer who loves turning complex logic
-            into interactive experiences. My latest project, El Pollo Loco, was
-            to push my technical boundaries and see just how much I could
-            accomplish in a view days.
-          </p>
-          <h2>About the Project</h2>
-          <p>
-            <b>El Pollo Loco</b> is a fast-paced browser game developed in just
-            15 days. The assets and graphics are from the talented design team
-            at the <b>Developer Akademie</b>.
-          </p>
-          <h2>What I Learned</h2>
-          <p>
-            This project was more than just a race against the clock. It was a
-            deep dive into the world of Object-Oriented Programming (OOP). I
-            learned much about Classes and Inheritance, Encapsulation and
-            Maintainable Architecture. Stepping away from simple scripts and
-            moving into a structured, object-oriented mindset was a big "level
-            up" of this journey. Enjoy the game!
-          </p>
-        </header>
-      </dialog>
-    </section>
-    <section class="imprint-dialog-content">
-      <dialog id="imprint-dialog">
-        <section class="d-flex right-bound">
-          <button id="exitBtn" onclick="closeImprintDialog()"><p>X</p></button>
-        </section>
-        <h1>Legal Notice / Credits</h1>
-        <h2>General Information:</h2>
-        <p>
-          This website and game were developed solely for educational and
-          non-commercial purposes as part of an Object-Oriented Programming
-          (OOP) learning project.
-        </p>
-        <ul>
-          <li>Developer: Felix Winkler</li>
-          <li>Address: Poetenweg 63 06773 Gräfenhainichen</li>
-          <li>Contact: Felixwinklerdev@gmail.com</li>
-          <li>Project Type: Educational 2D Browser Game (OOP Project)</li>
-        </ul>
-        <h2>Intellectual Property & Media Credits:</h2>
-        <h3>1. Game Graphics & Visual Assets</h3>
-        <ul>
-          <li>
-            The 2D in-game graphics and visual assets were provided exclusively
-            for educational use by the design team of Developer Akademie.
-          </li>
-          <li>
-            All rights to these graphics remain with the original creators and
-            design team.
-          </li>
-        </ul>
-        <h3>2. Sound Effects & Icons</h3>
-        <ul>
-          <li>
-            The sound effects and external icons (outside the core gameplay)
-            used in this project were sourced from Pixabay under the Pixabay
-            Content License.
-          </li>
-        </ul>
-        <h2>Disclaimer</h2>
-        <h2>Non-Commercial Use</h2>
-        <p>
-          This project is completely non-commercial. No monetary profit is being
-          generated from this website or game.
-        </p>
-        <h2>Content & External Links</h2>
-        <p>
-          While this project was created with the utmost care, no liability is
-          assumed for the correctness, completeness, or topicality of the
-          provided content. If this site contains links to external websites, we
-          have no influence over their content and cannot accept liability for
-          external links.
-        </p>
-      </dialog>
-    </section>
   </body>
 </html>

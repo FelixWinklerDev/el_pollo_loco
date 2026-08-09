@@ -15,6 +15,7 @@ class World {
   checkInterval;
   animationFrameId;
   endScreenShown = false;
+  isPaused = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -22,13 +23,13 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
-    this.runChecks();
     this.winScreen.src = "./assets/you_won_you_lost/you_win_b.png";
     this.loseScreen.src =
       "./assets/9_intro_outro_screens/game_over/oh_no_you_lost!.png";
     this.gameWon = false;
     this.gameLost = false;
     this.endScreenShown = false;
+    this.runChecks();
   }
 
   setWorld() {
@@ -40,8 +41,33 @@ class World {
     });
   }
 
+  pause() {
+    this.isPaused = true;
+    stopSnoring();
+    if (this.character) {
+      clearTimeout(this.character.idleTimer);
+      this.character.idleSoundStarted = false;
+    }
+  }
+
+  resume() {
+    this.isPaused = false;
+    if (this.character) {
+      this.character.resetIdleTimer();
+    }
+  }
+
+  togglePause() {
+    if (this.isPaused) {
+      this.resume();
+    } else {
+      this.pause();
+    }
+  }
+
   runChecks() {
-    this.checkInterval = setInterval(() => {
+    this.runInterval = setInterval(() => {
+      if (this.isPaused) return;
       this.checkCollision();
       this.checkBottleCollision();
       this.checkThrowItemCollisions();
@@ -144,13 +170,13 @@ class World {
     }, delay);
   }
 
-checkBottleOutOfCam() {
-  this.throwableObjects.forEach((bottle) => {
-    if (bottle.x > -this.camera_x + 800 || bottle.x < -this.camera_x - 100) {
-      this.removeThrowableObject(bottle);
-    }
-  });
-}
+  checkBottleOutOfCam() {
+    this.throwableObjects.forEach((bottle) => {
+      if (bottle.x > -this.camera_x + 800 || bottle.x < -this.camera_x - 100) {
+        this.removeThrowableObject(bottle);
+      }
+    });
+  }
 
   checkCoinCollision() {
     this.level.coins.forEach((coin, index) => {
@@ -168,6 +194,7 @@ checkBottleOutOfCam() {
     if (boss && boss.isDead && !this.gameWon) {
       this.gameWon = true;
       setTimeout(() => {
+        stopSnoring();
         playWinMusic();
         this.stopGame();
       }, 2000);
@@ -176,6 +203,7 @@ checkBottleOutOfCam() {
 
   checkGameOver() {
     if (this.character.health <= 0 && !this.gameLost) {
+      stopSnoring();
       this.gameLost = true;
       setTimeout(() => {
         playGameOverMusic();
@@ -186,9 +214,10 @@ checkBottleOutOfCam() {
 
   drawEndScreen() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.translate(this.camera_x, 0);
+    let roundedCameraX = Math.round(this.camera_x);
+    this.ctx.translate(roundedCameraX, 0);
     this.addObjectsToMap(this.level.background);
-    this.ctx.translate(-this.camera_x, 0);
+    this.ctx.translate(-roundedCameraX, 0);
     let img = this.gameWon ? this.winScreen : this.loseScreen;
     this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
   }

@@ -102,6 +102,7 @@ class Boss extends ColidableObject {
         }
         return;
       }
+      if (world && world.isPaused) return;
       if (this.hadFirstContact && !this.isAttacking) {
         this.handleBossPhases();
       } else if (!this.hadFirstContact) {
@@ -122,10 +123,19 @@ class Boss extends ColidableObject {
   checkPlayerDistance() {
     if (this.world && this.world.character.x > 3300 && !this.hadFirstContact) {
       this.hadFirstContact = true;
+      this.playBossMusic();
+    }
+  }
+
+  playBossMusic() {
+    if (!this.bossMusicStarted && typeof switchToBossMusic === "function") {
+      switchToBossMusic();
+      this.bossMusicStarted = true;
     }
   }
 
   shootChicken() {
+    if (world && world.isPaused) return;
     this.isAttacking = true;
     if (this.world) {
       let baby = new BabyChicken(this.x, this.energy);
@@ -150,10 +160,6 @@ class Boss extends ColidableObject {
     } else {
       this.arrivedAtTarget = true;
       this.playAnimation(this.animatedAlert);
-      if (!this.bossMusicStarted && typeof switchToBossMusic === "function") {
-        switchToBossMusic();
-        this.bossMusicStarted = true;
-      }
       this.startAttacking();
     }
   }
@@ -161,6 +167,7 @@ class Boss extends ColidableObject {
   startAttacking() {
     if (!this.attackTimer) {
       this.attackTimer = setInterval(() => {
+        if (world && world.isPaused) return;
         this.shootChicken();
       }, 1500);
     }
@@ -195,7 +202,6 @@ class Boss extends ColidableObject {
     if (this.deathAnimationTimer) {
       return;
     }
-
     this.deathCurrentImage = 0;
     this.deathAnimationTimer = setInterval(() => {
       this.playDeathAnimation(images);

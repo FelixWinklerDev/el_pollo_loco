@@ -131,3 +131,10 @@ function playGameOverMusic() {
   pauseAllBackgroundMusic();
   playSound(gameSounds.game_over);
 }
+
+function stopSnoring() {
+  if (gameSounds && gameSounds.pepe_idle) {
+    gameSounds.pepe_idle.pause();
+    gameSounds.pepe_idle.currentTime = 0;
+  }
+}

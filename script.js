@@ -1,6 +1,8 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+const PAUSE_ICON = "./assets/html-img/texler-break-2398780_640.png";
+const PLAY_ICON = "./assets/html-img/texler-play-2398749_640.png";
 
 function closeRotateDeviceDialog() {
   const dialog = document.getElementById("rotateDeviceDialog");
@@ -21,8 +23,9 @@ window
   });
 
 function startGame() {
-  if (document.activeElement) {
-    document.activeElement.blur();
+  let playBtn = document.getElementById("playBtn");
+  if (playBtn) {
+    playBtn.classList.add("d-none");
   }
   gameSounds.menu_music.pause();
   gameSounds.menu_music.currentTime = 0;
@@ -149,18 +152,50 @@ function applyControlsVisibility() {
   }
 }
 
+function togglePauseGame() {
+  if (document.activeElement) {
+    document.activeElement.blur();
+  }
+  if (world) {
+    world.togglePause();
+    updatePauseButtonUI();
+  }
+}
+
+function updatePauseButtonUI() {
+  const pauseBtnImg = document.querySelector("#pauseBtn img");
+  if (!pauseBtnImg || !world) return;
+
+  if (world.isPaused) {
+    pauseBtnImg.src = PLAY_ICON;
+    pauseBtnImg.alt = "play button";
+  } else {
+    pauseBtnImg.src = PAUSE_ICON;
+    pauseBtnImg.alt = "pause button";
+  }
+}
+
 function openDialog() {
+  if (world) {
+    world.pause();
+  }
   closeMobileMenuIfOpen();
-  const dialogRef = document.getElementById("aboutUs");
+  const dialogRef = document.getElementById("aboutMe");
   dialogRef?.showModal();
 }
 
 function closeDialog() {
-  const dialogRef = document.getElementById("aboutUs");
+  const dialogRef = document.getElementById("aboutMe");
   dialogRef?.close();
+  if (world) {
+    world.resume();
+  }
 }
 
 function openHowToPlayDialog() {
+  if (world) {
+    world.pause();
+  }
   closeMobileMenuIfOpen();
   const dialogRef = document.getElementById("howToPlay");
   dialogRef?.showModal();
@@ -169,10 +204,16 @@ function openHowToPlayDialog() {
 function closeHowToPlayDialog() {
   const dialogRef = document.getElementById("howToPlay");
   dialogRef?.close();
+  if (world) {
+    world.resume();
+  }
 }
 
 function openImprintDialog(event) {
   if (event) event.preventDefault();
+  if (world) {
+    world.pause();
+  }
   closeMobileMenuIfOpen();
   const dialogRef = document.getElementById("imprint-dialog");
   dialogRef?.showModal();
@@ -181,6 +222,9 @@ function openImprintDialog(event) {
 function closeImprintDialog() {
   const dialogRef = document.getElementById("imprint-dialog");
   dialogRef?.close();
+  if (world) {
+    world.resume();
+  }
 }
 
 function showStartScreen() {

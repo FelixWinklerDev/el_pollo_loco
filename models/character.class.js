@@ -90,7 +90,6 @@ class Character extends ColidableObject {
     this.loadImages(this.animatedDamage);
     this.loadImages(this.animateIdle);
     this.loadImages(this.animateLongIdle);
-
     this.x = 10;
     this.y = 140;
     this.width = 240;
@@ -103,6 +102,7 @@ class Character extends ColidableObject {
   animate() {
     this.resetIdleTimer();
     setInterval(() => {
+      if (this.world && this.world.isPaused) return;
       if (this.isDead() && !this.deathSequenceStarted) {
         this.deathSequenceStarted = true;
         this.playDeathSequence();
@@ -144,6 +144,7 @@ class Character extends ColidableObject {
       this.world.camera_x = -this.x - 3;
     }, 1000 / 60);
     setInterval(() => {
+      if (this.world && this.world.isPaused) return;
       if (this.isInAir()) {
         this.playAnimation(this.animatedJump);
       } else if (this.getDamage()) {
@@ -158,16 +159,21 @@ class Character extends ColidableObject {
     }, 180);
   }
 
+  hit() {
+    super.hit();
+    this.resetIdleTimer();
+  }
+
   resetIdleTimer() {
     this.lastAction = Date.now();
     this.longIdleActive = false;
     if (this.idleSoundStarted) {
-      gameSounds.pepe_idle.pause();
-      gameSounds.pepe_idle.currentTime = 0;
+      stopSnoring(); // Nutzen wir direkt unsere zentrale Stopp-Funktion
       this.idleSoundStarted = false;
     }
     clearTimeout(this.idleTimer);
     this.idleTimer = setTimeout(() => {
+      if (this.world && this.world.isPaused) return;
       this.longIdleActive = true;
       if (!this.idleSoundStarted) {
         this.idleSoundStarted = true;
@@ -182,6 +188,7 @@ class Character extends ColidableObject {
 
   airAnimate() {
     setInterval(() => {
+      if (this.world && this.world.isPaused) return;
       if (this.isInAir()) {
         if (!this.jumpAnimationPlayed) {
           this.currentImage = 0;

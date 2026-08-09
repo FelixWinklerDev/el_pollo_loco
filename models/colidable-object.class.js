@@ -25,6 +25,7 @@ class ColidableObject extends MoveableObject {
   }
 
   hit() {
+    stopSnoring();
     this.health -= 20;
     if (this.health < 0) {
       this.health = 0;
@@ -50,6 +51,7 @@ class ColidableObject extends MoveableObject {
 
   moveLeft() {
     setInterval(() => {
+      if (world && world.isPaused) return;
       this.x -= this.speed;
     }, 1000 / 60);
   }
@@ -64,17 +66,18 @@ class ColidableObject extends MoveableObject {
     this.mirrored = false;
   }
 
-applyGravity() {
-  setInterval(() => {
-    if (this instanceof ThrowableObject && !this.isFalling) {
-      return;
-    }
-    if (this.isInAir() || this.speedY > 0) {
-      this.y -= this.speedY;
-      this.speedY -= this.acceleration;
-    }
-  }, 1000 / 25);
-}
+  applyGravity() {
+    setInterval(() => {
+      if (this.world && this.world.isPaused) return;
+      if (this instanceof ThrowableObject && !this.isFalling) {
+        return;
+      }
+      if (this.isInAir() || this.speedY > 0) {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
+      }
+    }, 1000 / 25);
+  }
 
   isInAir() {
     return this.y < 140;

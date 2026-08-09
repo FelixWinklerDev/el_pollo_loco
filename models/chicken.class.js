@@ -24,6 +24,7 @@ class Chicken extends ColidableObject {
   enemyMoveAnimation() {
     this.moveLeft();
     setInterval(() => {
+      if (world && world.isPaused) return;
       if (this.energy > 0) {
         this.playAnimation(this.animatedMove);
       }
