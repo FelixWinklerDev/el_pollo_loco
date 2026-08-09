@@ -24,8 +24,10 @@ window
 
 function startGame() {
   let playBtn = document.getElementById("playBtn");
+  let restartBtn = document.getElementById("restartBtn")
   if (playBtn) {
     playBtn.classList.add("d-none");
+    restartBtn.classList.remove("d-none")
   }
   gameSounds.menu_music.pause();
   gameSounds.menu_music.currentTime = 0;

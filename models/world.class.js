@@ -246,6 +246,9 @@ class World {
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
+    if (this.isPaused) {
+      this.drawPauseScreen();
+    }
     let self = this;
     this.animationFrameId = requestAnimationFrame(function () {
       self.draw();
@@ -294,5 +297,14 @@ class World {
     if (this.gameWon || this.gameLost) {
       this.drawEndScreen();
     }
+  }
+
+  drawPauseScreen() {
+    this.ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.font = "50px Rye-Regular";
+    this.ctx.fillStyle = "white";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText("PAUSE", this.canvas.width / 2, this.canvas.height / 2);
   }
 }
