@@ -255,6 +255,7 @@ class Character extends ColidableObject {
         !this.world ||
         this.world.isPaused ||
         this.world.gameLost ||
+        this.world.gameWon ||
         this.isDead()
       )
         return;
