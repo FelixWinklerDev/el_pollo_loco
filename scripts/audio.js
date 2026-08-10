@@ -1,3 +1,7 @@
+/**
+ * Collection of all HTMLAudioElement instances used for game sound effects and background music.
+ * @type {Object.<string, HTMLAudioElement>}
+ */
 const gameSounds = {
   menu_music: new Audio("./assets/audio/main-song.mp3"),
   boss_music: new Audio("./assets/audio/boss-song.mp3"),
@@ -18,7 +22,10 @@ const gameSounds = {
   game_over: new Audio("./assets/audio/game-over.mp3"),
 };
 
+/** @type {boolean} State flag indicating if background music playback has started. */
 let musicStarted = false;
+
+/** @type {boolean} Global mute state loaded from localStorage. */
 let isMuted = localStorage.getItem("isMuted") === "true";
 
 gameSounds.menu_music.loop = true;
@@ -29,6 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
   applyMuteState();
 });
 
+/**
+ * Syncs the muted state across all audio elements and updates the UI mute button icon and accessibility label.
+ * @returns {void}
+ */
 function applyMuteState() {
   Object.values(gameSounds).forEach((sound) => {
     sound.muted = isMuted;
@@ -46,6 +57,11 @@ function applyMuteState() {
   }
 }
 
+/**
+ * Resets playback position and plays a sound effect if global audio is not muted.
+ * @param {HTMLAudioElement} sound - The audio instance to play.
+ * @returns {void}
+ */
 function playSound(sound) {
   if (isMuted) {
     return;
@@ -54,11 +70,20 @@ function playSound(sound) {
   sound.play().catch(() => {});
 }
 
+/**
+ * Pauses an audio element and resets its playback position to zero.
+ * @param {HTMLAudioElement} sound - The audio instance to stop.
+ * @returns {void}
+ */
 function stopSound(sound) {
   sound.pause();
   sound.currentTime = 0;
 }
 
+/**
+ * Toggles the global mute state, persists preference to localStorage, and updates audio state and UI icons.
+ * @returns {void}
+ */
 function toggleMute() {
   if (document.activeElement) {
     document.activeElement.blur();
@@ -79,11 +104,19 @@ function toggleMute() {
   }
 }
 
+/**
+ * Pauses background music tracks (menu and boss music).
+ * @returns {void}
+ */
 function pauseAllBackgroundMusic() {
   gameSounds.menu_music.pause();
   gameSounds.boss_music.pause();
 }
 
+/**
+ * Pauses all non-background sound effects.
+ * @returns {void}
+ */
 function pauseAllSounds() {
   gameSounds.chicken_sound.pause();
   gameSounds.chicken_death.pause();
@@ -102,6 +135,10 @@ function pauseAllSounds() {
   gameSounds.game_over.pause();
 }
 
+/**
+ * Plays the appropriate background music depending on whether the boss encounter has been triggered.
+ * @returns {void}
+ */
 function startAllBackgroundMusic() {
   pauseAllBackgroundMusic();
   if (
@@ -114,6 +151,10 @@ function startAllBackgroundMusic() {
   }
 }
 
+/**
+ * Transitions active background music to the boss battle theme.
+ * @returns {void}
+ */
 function switchToBossMusic() {
   if (isMuted) {
     return;
@@ -122,16 +163,28 @@ function switchToBossMusic() {
   playSound(gameSounds.boss_music);
 }
 
+/**
+ * Stops background music and plays the victory jingle.
+ * @returns {void}
+ */
 function playWinMusic() {
   pauseAllBackgroundMusic();
   playSound(gameSounds.victory);
 }
 
+/**
+ * Stops background music and plays the game over jingle.
+ * @returns {void}
+ */
 function playGameOverMusic() {
   pauseAllBackgroundMusic();
   playSound(gameSounds.game_over);
 }
 
+/**
+ * Pauses and resets character snoring/idle audio.
+ * @returns {void}
+ */
 function stopSnoring() {
   if (gameSounds && gameSounds.pepe_idle) {
     gameSounds.pepe_idle.pause();

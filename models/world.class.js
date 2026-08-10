@@ -1,22 +1,47 @@
+/**
+ * Main game engine class responsible for canvas rendering, game loop management,
+ * camera tracking, collision detection, object lifecycle, and UI/overlay states.
+ */
 class World {
+  /** @type {Character} Player character instance. */
   character = new Character();
+  /** @type {Level} Current level containing enemies, background layers, and collectibles. */
   level = level1;
+  /** @type {HTMLCanvasElement} Canvas element used for rendering. */
   canvas;
+  /** @type {CanvasRenderingContext2D} 2D rendering context for the canvas. */
   ctx;
+  /** @type {Keyboard} Input tracking manager instance. */
   keyboard;
+  /** @type {number} Camera horizontal translation offset. */
   camera_x = 0;
+  /** @type {Healthbar} Player health status bar UI element. */
   statusBar = new Healthbar();
+  /** @type {BottleCounter} Collected bottles UI counter element. */
   bottleCounter = new BottleCounter();
+  /** @type {CoinCounter} Collected coins UI counter element. */
   coinCounter = new CoinCounter();
+  /** @type {ThrowableObject[]} Active throwable bottle objects currently in the world. */
   throwableObjects = [];
+  /** @type {BossHealthbar} Boss health status bar UI element. */
   bossHealth = new BossHealthbar();
+  /** @type {HTMLImageElement} Preloaded image displayed upon winning the game. */
   winScreen = new Image();
+  /** @type {HTMLImageElement} Preloaded image displayed upon losing the game. */
   loseScreen = new Image();
+  /** @type {number|null} Interval ID for game state and collision checks. */
   checkInterval;
+  /** @type {number|null} Handle for the active `requestAnimationFrame` loop. */
   animationFrameId;
+  /** @type {boolean} State flag indicating whether the victory or defeat screen is currently active. */
   endScreenShown = false;
+  /** @type {boolean} State flag indicating if the game loop and interactions are paused. */
   isPaused = false;
-
+  /**
+   * Initializes the game world, sets up canvas contexts, preloads end-game graphics, and starts checks and draw loops.
+   * @param {HTMLCanvasElement} canvas - Target rendering canvas element.
+   * @param {Keyboard} keyboard - Input state tracker instance.
+   */
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
@@ -28,10 +53,13 @@ class World {
       "./assets/9_intro_outro_screens/game_over/oh_no_you_lost!.png";
     this.gameWon = false;
     this.gameLost = false;
-    this.endScreenShown = false;
     this.runChecks();
   }
 
+  /**
+   * Assigns a reference of this World instance to the character and boss entities.
+   * @returns {void}
+   */
   setWorld() {
     this.character.world = this;
     this.level.enemies.forEach((enemy) => {
@@ -41,6 +69,10 @@ class World {
     });
   }
 
+  /**
+   * Pauses world execution and resets character idle/snoring timers.
+   * @returns {void}
+   */
   pause() {
     this.isPaused = true;
     stopSnoring();
@@ -50,6 +82,10 @@ class World {
     }
   }
 
+  /**
+   * Resumes world execution and restarts character idle tracking.
+   * @returns {void}
+   */
   resume() {
     this.isPaused = false;
     if (this.character) {
@@ -57,6 +93,10 @@ class World {
     }
   }
 
+  /**
+   * Toggles between paused and active game states.
+   * @returns {void}
+   */
   togglePause() {
     if (this.isPaused) {
       this.resume();
@@ -65,6 +105,10 @@ class World {
     }
   }
 
+  /**
+   * Starts a high-frequency interval timer to run collision detection, entity cleanup, and end-game condition checks.
+   * @returns {void}
+   */
   runChecks() {
     this.runInterval = setInterval(() => {
       if (this.isPaused) return;
@@ -72,12 +116,15 @@ class World {
       this.checkBottleCollision();
       this.checkThrowItemCollisions();
       this.checkCoinCollision();
-      this.checkBottleOutOfCam();
       this.checkBossDeath();
       this.checkGameOver();
     }, 25);
   }
 
+  /**
+   * Checks collisions between the player character and active enemies, resolving stomps or player damage.
+   * @returns {void}
+   */
   checkCollision() {
     for (let i = this.level.enemies.length - 1; i >= 0; i--) {
       const enemy = this.level.enemies[i];
@@ -93,6 +140,11 @@ class World {
     }
   }
 
+  /**
+   * Processes the result of a character-enemy collision (either landing a stomp or receiving damage).
+   * @param {DrawableObject} enemy - Target enemy entity.
+   * @returns {boolean} True if the enemy was stomped, false if player took damage.
+   */
   handleCharacterEnemyCollision(enemy) {
     if (this.stomped(enemy)) {
       enemy.hit();
@@ -109,6 +161,11 @@ class World {
     return false;
   }
 
+  /**
+   * Determines if the player character is currently landing on top of an enemy from above.
+   * @param {DrawableObject} enemy - Target enemy entity.
+   * @returns {boolean} True if the collision condition qualifies as a stomp landing.
+   */
   stomped(enemy) {
     const charLeft = this.character.x + this.character.offset.left;
     const charRight =
@@ -124,6 +181,10 @@ class World {
     return isFalling && isDirectlyOver && isStomp;
   }
 
+  /**
+   * Detects collisions between the character and ground bottle items for collection.
+   * @returns {void}
+   */
   checkBottleCollision() {
     this.level.bottles.forEach((bottle, index) => {
       if (this.character.collidingHitbox(bottle)) {
@@ -135,6 +196,10 @@ class World {
     });
   }
 
+  /**
+   * Checks for collisions between thrown salsa bottles and active enemies.
+   * @returns {void}
+   */
   checkThrowItemCollisions() {
     this.throwableObjects.forEach((bottle) => {
       if (bottle.isSplashing || bottle.readyToRemove) {
@@ -149,6 +214,12 @@ class World {
     });
   }
 
+  /**
+   * Applies damage to an enemy struck by a bottle and triggers splash animations and UI updates.
+   * @param {DrawableObject} enemy - Enemy struck by the projectile.
+   * @param {ThrowableObject} bottle - Thrown bottle projectile object.
+   * @returns {void}
+   */
   bottleHit(enemy, bottle) {
     enemy.hit(10);
     if (enemy instanceof Boss) {
@@ -161,6 +232,12 @@ class World {
     this.removeThrowableObject(bottle, 300);
   }
 
+  /**
+   * Schedules or executes the removal of a throwable object from the world array.
+   * @param {ThrowableObject} bottle - Target throwable object to remove.
+   * @param {number} [delay=0] - Optional delay in milliseconds before removal.
+   * @returns {void}
+   */
   removeThrowableObject(bottle, delay = 0) {
     setTimeout(() => {
       let index = this.throwableObjects.indexOf(bottle);
@@ -170,14 +247,10 @@ class World {
     }, delay);
   }
 
-  checkBottleOutOfCam() {
-    this.throwableObjects.forEach((bottle) => {
-      if (bottle.x > -this.camera_x + 800 || bottle.x < -this.camera_x - 100) {
-        this.removeThrowableObject(bottle);
-      }
-    });
-  }
-
+  /**
+   * Detects character collisions with collectible coins in the world.
+   * @returns {void}
+   */
   checkCoinCollision() {
     this.level.coins.forEach((coin, index) => {
       if (this.character.collidingHitbox(coin)) {
@@ -189,6 +262,10 @@ class World {
     });
   }
 
+  /**
+   * Evaluates whether the boss enemy has been defeated to trigger win sequence.
+   * @returns {void}
+   */
   checkBossDeath() {
     let boss = this.level.enemies.find((e) => e instanceof Boss);
     if (boss && boss.isDead && !this.gameWon) {
@@ -201,6 +278,10 @@ class World {
     }
   }
 
+  /**
+   * Evaluates player health state to trigger game over sequence upon death.
+   * @returns {void}
+   */
   checkGameOver() {
     if (this.character.health <= 0 && !this.gameLost) {
       stopSnoring();
@@ -212,6 +293,10 @@ class World {
     }
   }
 
+  /**
+   * Renders the game over or victory background and overlay graphics onto the canvas context.
+   * @returns {void}
+   */
   drawEndScreen() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     let roundedCameraX = Math.round(this.camera_x);
@@ -222,6 +307,10 @@ class World {
     this.ctx.drawImage(img, 0, 0, this.canvas.width, this.canvas.height);
   }
 
+  /**
+   * Primary animation rendering loop. Clears canvas, translates camera offsets, and draws all entities and UI.
+   * @returns {void}
+   */
   draw() {
     if (this.endScreenShown) {
       this.drawEndScreen();
@@ -255,6 +344,11 @@ class World {
     });
   }
 
+  /**
+   * Draws an individual drawable object onto the canvas context, handling horizontal flipping when mirrored.
+   * @param {DrawableObject} mo - Movable or drawable object instance.
+   * @returns {void}
+   */
   addToMap(mo) {
     if (mo.mirrored) {
       this.ctx.save();
@@ -272,33 +366,41 @@ class World {
     }
   }
 
+  /**
+   * Iterates through an array of drawable objects and renders each to the canvas.
+   * @param {DrawableObject[]} object - Array of drawable object instances.
+   * @returns {void}
+   */
   addObjectsToMap(object) {
     object.forEach((o) => {
       this.addToMap(o);
     });
   }
 
+  /**
+   * Checks whether the boss encounter has been initiated by proximity.
+   * @returns {boolean} True if the boss first contact state is active.
+   */
   bossTriggered() {
     let boss = this.level.enemies.find((e) => e instanceof Boss);
     return boss && boss.hadFirstContact;
   }
 
+  /**
+   * Halts game animation loops, clears intervals, and renders end screen graphics.
+   * @returns {void}
+   */
   stopGame() {
     this.endScreenShown = true;
-    if (this.animationFrameId) {
-      cancelAnimationFrame(this.animationFrameId);
-    }
-    if (this.checkInterval) {
-      clearInterval(this.checkInterval);
-    }
-    for (let i = 1; i < 9999; i++) {
-      window.clearInterval(i);
-    }
-    if (this.gameWon || this.gameLost) {
-      this.drawEndScreen();
-    }
+    cancelAnimationFrame(this.animationFrameId);
+    clearInterval(this.runInterval);
+    if (this.gameWon || this.gameLost) this.drawEndScreen();
   }
 
+  /**
+   * Renders a semi-transparent dark overlay with pause text over the canvas.
+   * @returns {void}
+   */
   drawPauseScreen() {
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);

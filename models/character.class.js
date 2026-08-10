@@ -1,4 +1,15 @@
+/**
+ * Class representing the main playable character in the game.
+ * Manages player controls, animations (walking, jumping, idle, long idle, hurt, death),
+ * inventory, camera tracking, gravity, and throwable objects.
+ * Inherits from ColidableObject.
+ * @extends ColidableObject
+ */
 class Character extends ColidableObject {
+  /**
+   * Image paths for standard idle animation.
+   * @type {string[]}
+   */
   animateIdle = [
     "./assets/2_character_pepe/1_idle/idle/I-1.png",
     "./assets/2_character_pepe/1_idle/idle/I-2.png",
@@ -11,6 +22,10 @@ class Character extends ColidableObject {
     "./assets/2_character_pepe/1_idle/idle/I-9.png",
   ];
 
+  /**
+   * Image paths for long idle/sleeping animation.
+   * @type {string[]}
+   */
   animateLongIdle = [
     "./assets/2_character_pepe/1_idle/long_idle/I-11.png",
     "./assets/2_character_pepe/1_idle/long_idle/I-12.png",
@@ -24,6 +39,10 @@ class Character extends ColidableObject {
     "./assets/2_character_pepe/1_idle/long_idle/I-20.png",
   ];
 
+  /**
+   * Image paths for walking animation.
+   * @type {string[]}
+   */
   animatedMove = [
     "./assets/2_character_pepe/2_walk/W-21.png",
     "./assets/2_character_pepe/2_walk/W-22.png",
@@ -33,6 +52,10 @@ class Character extends ColidableObject {
     "./assets/2_character_pepe/2_walk/W-26.png",
   ];
 
+  /**
+   * Image paths for jump animation.
+   * @type {string[]}
+   */
   animatedJump = [
     "./assets/2_character_pepe/3_jump/J-31.png",
     "./assets/2_character_pepe/3_jump/J-32.png",
@@ -45,6 +68,10 @@ class Character extends ColidableObject {
     "./assets/2_character_pepe/3_jump/J-39.png",
   ];
 
+  /**
+   * Image paths for death animation sequence.
+   * @type {string[]}
+   */
   animatedDeath = [
     "./assets/2_character_pepe/5_dead/D-51.png",
     "./assets/2_character_pepe/5_dead/D-52.png",
@@ -55,32 +82,70 @@ class Character extends ColidableObject {
     "./assets/2_character_pepe/5_dead/D-57.png",
   ];
 
+  /**
+   * Image paths for taking damage animation.
+   * @type {string[]}
+   */
   animatedDamage = [
     "./assets/2_character_pepe/4_hurt/H-41.png",
     "./assets/2_character_pepe/4_hurt/H-42.png",
     "./assets/2_character_pepe/4_hurt/H-43.png",
   ];
 
+  /** @type {number} Index tracking current frame in animation loops. */
   currentImage = 0;
+
+  /** @type {number} Movement speed of the character. */
   speed = 6.5;
+
+  /** @type {Object} Reference to the world instance. */
   world;
+
+  /** @type {boolean} Indicates whether the jump animation has started playing. */
   jumpAnimationPlayed = false;
+
+  /** @type {boolean} Indicates whether the death animation has completed. */
   deathAnimationPlayed = false;
+
+  /** @type {boolean} Prevents repeating the initial death sequence trigger. */
   deathSequenceStarted = false;
+
+  /** @type {number} Timestamp (in ms) of the last bottle throw. */
   lastThrow = 0;
+
+  /** @type {number|null} Timeout ID for triggering long idle state. */
   idleTimer = null;
+
+  /** @type {boolean} Tracks whether snoring audio is playing. */
   idleSoundStarted = false;
+
+  /** @type {boolean} Indicates if long idle mode is active. */
   longIdleActive = false;
+
+  /**
+   * Hitbox offsets for collision detection.
+   * @type {{top: number, bottom: number, left: number, right: number}}
+   */
   offset = {
     top: 120,
     bottom: 10,
     left: 70,
     right: 70,
   };
+
+  /** @type {number} Current count of collected salsa bottles. */
   bottleAmount = 0;
+
+  /** @type {number} Current count of collected coins. */
   coinAmount = 0;
+
+  /** @type {number} Timestamp (in ms) of the last registered user action. */
   lastAction = 0;
 
+  /**
+   * Creates an instance of Character.
+   * Loads initial assets, sets dimensions/spawn point, applies physics, and starts movement loops.
+   */
   constructor() {
     super();
     this.loadImage("./assets/2_character_pepe/1_idle/idle/I-1.png");
@@ -99,6 +164,10 @@ class Character extends ColidableObject {
     this.animate();
   }
 
+  /**
+   * Initializes main game loops for input checks, movement, camera updates, and visual state rendering.
+   * @returns {void}
+   */
   animate() {
     this.resetIdleTimer();
     setInterval(() => {
@@ -159,11 +228,20 @@ class Character extends ColidableObject {
     }, 180);
   }
 
+  /**
+   * Overrides parent hit method to register damage and reset the inactivity timer.
+   * @returns {void}
+   */
   hit() {
     super.hit();
     this.resetIdleTimer();
   }
 
+  /**
+   * Resets inactivity timers and stops idle snoring audio.
+   * Schedules activation of long idle state after 5 seconds of inactivity.
+   * @returns {void}
+   */
   resetIdleTimer() {
     this.lastAction = Date.now();
     this.longIdleActive = false;
@@ -182,10 +260,18 @@ class Character extends ColidableObject {
     }, 5000);
   }
 
+  /**
+   * Evaluates if character should be in long idle state based on activity and air/damage flags.
+   * @returns {boolean} True if long idle is active without air/damage interference.
+   */
   isLongIdle() {
     return this.longIdleActive && !this.isInAir() && !this.getDamage();
   }
 
+  /**
+   * Manages jump/aerial animation states and ground transition resets.
+   * @returns {void}
+   */
   airAnimate() {
     setInterval(() => {
       if (this.world && this.world.isPaused) return;
@@ -206,10 +292,18 @@ class Character extends ColidableObject {
     }, 180);
   }
 
+  /**
+   * Plays standard idle animation.
+   * @returns {void}
+   */
   handleIdleAnimations() {
     this.playAnimation(this.animateIdle);
   }
 
+  /**
+   * Plays character death animation sequence before executing final knockback jump.
+   * @returns {void}
+   */
   playDeathSequence() {
     let deathFrame = 0;
     let deathInterval = setInterval(() => {
@@ -224,6 +318,10 @@ class Character extends ColidableObject {
     }, 100);
   }
 
+  /**
+   * Applies vertical velocity boost to make the character fall off-screen upon death.
+   * @returns {void}
+   */
   deathJumpUp() {
     this.speedY = 25;
     let fallInterval = setInterval(() => {
@@ -236,18 +334,31 @@ class Character extends ColidableObject {
     }, 1000 / 25);
   }
 
+  /**
+   * Increments bottle count up to a maximum limit of 15.
+   * @returns {void}
+   */
   collectBottle() {
     if (this.bottleAmount < 15) {
       this.bottleAmount++;
     }
   }
 
+  /**
+   * Increments coin count up to a maximum limit of 100.
+   * @returns {void}
+   */
   collectCoin() {
     if (this.coinAmount < 100) {
       this.coinAmount++;
     }
   }
 
+  /**
+   * Instantiates a new ThrowableObject (bottle) with initial velocity and updates inventory UI.
+   * Enforces a cooldown period between throws.
+   * @returns {void}
+   */
   throwBottle() {
     const now = Date.now();
     if (now - this.lastThrow < 700) return;

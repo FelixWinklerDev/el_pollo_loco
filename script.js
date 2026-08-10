@@ -1,9 +1,22 @@
+/** @type {HTMLCanvasElement} Primary game rendering canvas element. */
 let canvas;
+
+/** @type {World} Main game world state controller instance. */
 let world;
+
+/** @type {Keyboard} Input tracking manager instance. */
 let keyboard = new Keyboard();
+
+/** @type {string} Path to the pause button icon asset. */
 const PAUSE_ICON = "./assets/html-img/texler-break-2398780_640.png";
+
+/** @type {string} Path to the play button icon asset. */
 const PLAY_ICON = "./assets/html-img/texler-play-2398749_640.png";
 
+/**
+ * Dismisses the screen rotation prompt modal dialog.
+ * @returns {void}
+ */
 function closeRotateDeviceDialog() {
   const dialog = document.getElementById("rotateDeviceDialog");
   if (dialog) {
@@ -22,12 +35,16 @@ window
     }
   });
 
+/**
+ * Initializes and launches a new game from the main menu screen.
+ * @returns {void}
+ */
 function startGame() {
   let playBtn = document.getElementById("playBtn");
-  let restartBtn = document.getElementById("restartBtn")
+  let restartBtn = document.getElementById("restartBtn");
   if (playBtn) {
     playBtn.classList.add("d-none");
-    restartBtn.classList.remove("d-none")
+    restartBtn.classList.remove("d-none");
   }
   gameSounds.menu_music.pause();
   gameSounds.menu_music.currentTime = 0;
@@ -35,6 +52,10 @@ function startGame() {
   startNewSession();
 }
 
+/**
+ * Stops the active game session, resets sound tracks, and launches a fresh game session.
+ * @returns {void}
+ */
 function restartGame() {
   if (document.activeElement) {
     document.activeElement.blur();
@@ -47,6 +68,10 @@ function restartGame() {
   startNewSession();
 }
 
+/**
+ * Clears current world state, re-initializes level entities, and launches audio/game loops.
+ * @returns {void}
+ */
 function startNewSession() {
   if (world) {
     world.stopGame();
@@ -57,6 +82,10 @@ function startNewSession() {
   startAllBackgroundMusic();
 }
 
+/**
+ * Binds the game canvas and keyboard state to create a new World instance.
+ * @returns {void}
+ */
 function init() {
   canvas = document.getElementById("gameCanvas");
   world = new World(canvas, keyboard);
@@ -92,6 +121,12 @@ window.addEventListener("keyup", (event) => {
   }
 });
 
+/**
+ * Binds touch events on a DOM element to corresponding properties on the keyboard state object.
+ * @param {string} elementId - ID of the target touch button element.
+ * @param {keyof Keyboard} keyboardProperty - Property name on the keyboard state object to toggle.
+ * @returns {void}
+ */
 function bindTouchToKey(elementId, keyboardProperty) {
   const element = document.getElementById(elementId);
   if (!element) return;
@@ -105,6 +140,10 @@ function bindTouchToKey(elementId, keyboardProperty) {
   });
 }
 
+/**
+ * Attaches touch event listeners to mobile UI touch controls.
+ * @returns {void}
+ */
 function setupMobileControls() {
   bindTouchToKey("btnLeft", "A");
   bindTouchToKey("btnRight", "D");
@@ -117,6 +156,10 @@ document.addEventListener("DOMContentLoaded", () => {
   applyControlsVisibility();
 });
 
+/**
+ * Closes the mobile navigation/footer menu if currently open.
+ * @returns {void}
+ */
 function closeMobileMenuIfOpen() {
   const footer = document.getElementById("main-footer");
   if (footer && footer.classList.contains("mobile-open")) {
@@ -124,15 +167,30 @@ function closeMobileMenuIfOpen() {
   }
 }
 
+/**
+ * Toggles mobile footer menu state and pauses or resumes active game execution.
+ * @returns {void}
+ */
 function toggleMobileMenu() {
   const footer = document.getElementById("main-footer");
-  if (footer) {
-    footer.classList.toggle("mobile-open");
+  if (!footer) return;
+  const isCurrentlyOpen = footer.classList.contains("mobile-open");
+  if (isCurrentlyOpen) {
+    footer.classList.remove("mobile-open");
+    if (world) world.resume();
+  } else {
+    footer.classList.add("mobile-open");
+    if (world) world.pause();
   }
 }
 
+/** @type {boolean} State flag indicating whether touch control overlays are hidden. */
 let controlsHidden = localStorage.getItem("controlsHidden") === "true";
 
+/**
+ * Toggles touch control overlay visibility and saves state preference to localStorage.
+ * @returns {void}
+ */
 function toggleControlGroups() {
   if (document.activeElement) {
     document.activeElement.blur();
@@ -142,6 +200,10 @@ function toggleControlGroups() {
   applyControlsVisibility();
 }
 
+/**
+ * Applies CSS class rules to hide or show on-screen touch controls based on user settings.
+ * @returns {void}
+ */
 function applyControlsVisibility() {
   const mobileControls = document.querySelector(".mobile-controls");
   const toggleBtn = document.getElementById("toggle-controlls");
@@ -154,6 +216,10 @@ function applyControlsVisibility() {
   }
 }
 
+/**
+ * Toggles the game pause state and updates UI button iconography.
+ * @returns {void}
+ */
 function togglePauseGame() {
   if (document.activeElement) {
     document.activeElement.blur();
@@ -164,10 +230,13 @@ function togglePauseGame() {
   }
 }
 
+/**
+ * Updates the pause button graphic and alt tags according to active game pause state.
+ * @returns {void}
+ */
 function updatePauseButtonUI() {
   const pauseBtnImg = document.querySelector("#pauseBtn img");
   if (!pauseBtnImg || !world) return;
-
   if (world.isPaused) {
     pauseBtnImg.src = PLAY_ICON;
     pauseBtnImg.alt = "play button";
@@ -177,15 +246,23 @@ function updatePauseButtonUI() {
   }
 }
 
+/**
+ * Opens the "About Me" modal dialog and pauses game execution.
+ * @returns {void}
+ */
 function openDialog() {
+  closeMobileMenuIfOpen();
   if (world) {
     world.pause();
   }
-  closeMobileMenuIfOpen();
   const dialogRef = document.getElementById("aboutMe");
   dialogRef?.showModal();
 }
 
+/**
+ * Closes the "About Me" modal dialog and resumes game execution.
+ * @returns {void}
+ */
 function closeDialog() {
   const dialogRef = document.getElementById("aboutMe");
   dialogRef?.close();
@@ -194,15 +271,23 @@ function closeDialog() {
   }
 }
 
+/**
+ * Opens the "How to Play" modal instructions dialog and pauses game execution.
+ * @returns {void}
+ */
 function openHowToPlayDialog() {
+  closeMobileMenuIfOpen();
   if (world) {
     world.pause();
   }
-  closeMobileMenuIfOpen();
   const dialogRef = document.getElementById("howToPlay");
   dialogRef?.showModal();
 }
 
+/**
+ * Closes the "How to Play" modal instructions dialog and resumes game execution.
+ * @returns {void}
+ */
 function closeHowToPlayDialog() {
   const dialogRef = document.getElementById("howToPlay");
   dialogRef?.close();
@@ -211,16 +296,25 @@ function closeHowToPlayDialog() {
   }
 }
 
+/**
+ * Opens the legal imprint modal dialog and pauses game execution.
+ * @param {Event} [event] - Optional click event object to prevent default browser navigation.
+ * @returns {void}
+ */
 function openImprintDialog(event) {
   if (event) event.preventDefault();
+  closeMobileMenuIfOpen();
   if (world) {
     world.pause();
   }
-  closeMobileMenuIfOpen();
   const dialogRef = document.getElementById("imprint-dialog");
   dialogRef?.showModal();
 }
 
+/**
+ * Closes the "How to Play" modal instructions dialog and resumes game execution.
+ * @returns {void}
+ */
 function closeImprintDialog() {
   const dialogRef = document.getElementById("imprint-dialog");
   dialogRef?.close();
@@ -229,11 +323,19 @@ function closeImprintDialog() {
   }
 }
 
+/**
+ * Displays the main start menu screen while hiding settings screen components.
+ * @returns {void}
+ */
 function showStartScreen() {
   document.getElementById("settingsScreen").classList.add("d-none");
   document.getElementById("startScreen").classList.remove("d-none");
 }
 
+/**
+ * Requests full-screen browser display mode for the game container element across cross-browser APIs.
+ * @returns {void}
+ */
 function openFullscreen() {
   let elem = document.getElementById("game-wrapper");
   if (elem.requestFullscreen) {
@@ -247,6 +349,10 @@ function openFullscreen() {
   }
 }
 
+/**
+ * Exits full-screen browser display mode across cross-browser APIs.
+ * @returns {void}
+ */
 function closeFullscreen() {
   let elem = document.getElementById("game-wrapper");
   if (document.exitFullscreen) {

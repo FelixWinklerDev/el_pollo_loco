@@ -1,5 +1,21 @@
+/**
+ * @fileoverview Initialization of the first game level.
+ */
+
+/**
+ * The global level1 instance containing all game objects including enemies,
+ * clouds, collectables, and background layers.
+ * @type {Level}
+ */
 let level1;
 
+/**
+ * Creates and initializes a new Level instance.
+ * Populates arrays for enemies, clouds, bottles, coins, and background objects.
+ * 
+ * @function initateLevel
+ * @returns {void}
+ */
 function initateLevel() {
   level1 = new Level(
     [

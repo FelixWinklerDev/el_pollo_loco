@@ -280,8 +280,8 @@
     align-items: center;
     position: fixed;
     inset: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
     z-index: 9999;
     box-sizing: border-box;
@@ -303,10 +303,10 @@
 
 @media screen and (max-height: 840px) and (orientation: landscape) and (pointer: coarse) {
   #game-wrapper {
+    position: relative;
+    display: inline-block;
     width: auto;
     height: 100vh;
-    max-width: none;
-    aspect-ratio: 3 / 2;
   }
 
   .main-wrapper {
@@ -336,14 +336,14 @@
 
   #main-footer {
     display: none;
-    position: absolute;
+    position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.85);
     z-index: 1001;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
   }
 
   #main-footer.mobile-open {
