@@ -251,7 +251,13 @@ class Character extends ColidableObject {
     }
     clearTimeout(this.idleTimer);
     this.idleTimer = setTimeout(() => {
-      if (this.world && this.world.isPaused) return;
+      if (
+        !this.world ||
+        this.world.isPaused ||
+        this.world.gameLost ||
+        this.isDead()
+      )
+        return;
       this.longIdleActive = true;
       if (!this.idleSoundStarted) {
         this.idleSoundStarted = true;
