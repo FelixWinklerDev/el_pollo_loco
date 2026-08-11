@@ -165,67 +165,72 @@ class Character extends ColidableObject {
   }
 
   /**
+   * Handles character movement inputs, damage movement, and camera updates.
+   * @returns {void}
+   */
+  handleCharacterMovement() {
+    setInterval(() => {
+      if (this.world?.isPaused || this.deathSequenceStarted) return;
+      if (this.isDead()) {
+        this.deathSequenceStarted = true;
+        return this.playDeathSequence();
+      }
+      if (this.getDamage()) return this.handleDamageMovement();
+
+      this.handleInputActions();
+      this.world.camera_x = -this.x - 3;
+    }, 1000 / 60);
+  }
+
+  /**
+   * Processes movement and action key presses.
+   * @returns {void}
+   */
+  handleInputActions() {
+    const k = this.world.keyboard;
+    if (k.D && this.x < this.world.level.level_end_x) this.characterMoveRight();
+    if (k.A && this.x > 0) this.characterMoveLeft();
+    if (k.W && !this.isInAir()) this.jump();
+    if (k.E && this.bottleAmount > 0) this.throwBottle();
+    if (k.A || k.D || k.W || k.E) this.resetIdleTimer();
+  }
+
+  /**
+   * Handles movement when taking damage.
+   * @returns {void}
+   */
+  handleDamageMovement() {
+    const k = this.world.keyboard;
+    if (k.D && this.x < this.world.level.level_end_x)
+      this.x += this.speed * 0.6;
+    if (k.A && this.x > 0) this.x -= this.speed * 0.6;
+    this.world.camera_x = -this.x - 5;
+  }
+
+  /**
+   * Handles rendering loops for sprite animations.
+   * @returns {void}
+   */
+  handleCharacterAnimations() {
+    setInterval(() => {
+      if (this.world?.isPaused) return;
+      if (this.isInAir()) this.playAnimation(this.animatedJump);
+      else if (this.getDamage()) this.playAnimation(this.animatedDamage);
+      else if (this.world.keyboard.A || this.world.keyboard.D)
+        this.playAnimation(this.animatedMove);
+      else if (this.isLongIdle()) this.playAnimation(this.animateLongIdle);
+      else this.handleIdleAnimations();
+    }, 180);
+  }
+
+  /**
    * Initializes main game loops for input checks, movement, camera updates, and visual state rendering.
    * @returns {void}
    */
   animate() {
     this.resetIdleTimer();
-    setInterval(() => {
-      if (this.world && this.world.isPaused) return;
-      if (this.isDead() && !this.deathSequenceStarted) {
-        this.deathSequenceStarted = true;
-        this.playDeathSequence();
-        return;
-      }
-      if (this.deathSequenceStarted) {
-        return;
-      }
-      if (this.getDamage()) {
-        if (this.world.keyboard.D && this.x < this.world.level.level_end_x) {
-          this.x += this.speed * 0.6;
-        }
-        if (this.world.keyboard.A && this.x > 0) {
-          this.x -= this.speed * 0.6;
-        }
-        this.world.camera_x = -this.x - 5;
-        return;
-      }
-      if (this.world.keyboard.D && this.x < this.world.level.level_end_x) {
-        this.characterMoveRight();
-      }
-      if (this.world.keyboard.A && this.x > 0) {
-        this.characterMoveLeft();
-      }
-      if (this.world.keyboard.W && !this.isInAir()) {
-        this.jump();
-      }
-      if (this.world.keyboard.E && this.bottleAmount > 0) {
-        this.throwBottle();
-      }
-      if (
-        this.world.keyboard.A ||
-        this.world.keyboard.D ||
-        this.world.keyboard.W ||
-        this.world.keyboard.E
-      ) {
-        this.resetIdleTimer();
-      }
-      this.world.camera_x = -this.x - 3;
-    }, 1000 / 60);
-    setInterval(() => {
-      if (this.world && this.world.isPaused) return;
-      if (this.isInAir()) {
-        this.playAnimation(this.animatedJump);
-      } else if (this.getDamage()) {
-        this.playAnimation(this.animatedDamage);
-      } else if (this.world.keyboard.A || this.world.keyboard.D) {
-        this.playAnimation(this.animatedMove);
-      } else if (this.isLongIdle()) {
-        this.playAnimation(this.animateLongIdle);
-      } else {
-        this.handleIdleAnimations();
-      }
-    }, 180);
+    this.handleCharacterMovement();
+    this.handleCharacterAnimations();
   }
 
   /**
@@ -238,33 +243,53 @@ class Character extends ColidableObject {
   }
 
   /**
-   * Resets inactivity timers and stops idle snoring audio.
-   * Schedules activation of long idle state after 5 seconds of inactivity.
+   * Resets inactivity timers and schedules long idle state after 5 seconds.
    * @returns {void}
    */
   resetIdleTimer() {
+    this.stopIdleState();
+    clearTimeout(this.idleTimer);
+    this.idleTimer = setTimeout(() => this.triggerLongIdle(), 5000);
+  }
+
+  /**
+   * Stops idle snoring audio and resets activity flags.
+   * @returns {void}
+   */
+  stopIdleState() {
     this.lastAction = Date.now();
     this.longIdleActive = false;
     if (this.idleSoundStarted) {
-      stopSnoring(); // Nutzen wir direkt unsere zentrale Stopp-Funktion
+      stopSnoring();
       this.idleSoundStarted = false;
     }
-    clearTimeout(this.idleTimer);
-    this.idleTimer = setTimeout(() => {
-      if (
-        !this.world ||
-        this.world.isPaused ||
-        this.world.gameLost ||
-        this.world.gameWon ||
-        this.isDead()
-      )
-        return;
-      this.longIdleActive = true;
-      if (!this.idleSoundStarted) {
-        this.idleSoundStarted = true;
-        playSound(gameSounds.pepe_idle);
-      }
-    }, 5000);
+  }
+
+  /**
+   * Checks if the game is in an active state for idle animations.
+   * @returns {boolean}
+   */
+  isGameActive() {
+    return (
+      this.world &&
+      !this.world.isPaused &&
+      !this.world.gameLost &&
+      !this.world.gameWon &&
+      !this.isDead()
+    );
+  }
+
+  /**
+   * Triggers long idle state and plays snoring audio if active.
+   * @returns {void}
+   */
+  triggerLongIdle() {
+    if (!this.isGameActive()) return;
+    this.longIdleActive = true;
+    if (!this.idleSoundStarted) {
+      this.idleSoundStarted = true;
+      playSound(gameSounds.pepe_idle);
+    }
   }
 
   /**

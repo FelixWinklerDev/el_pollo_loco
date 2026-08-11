@@ -71,29 +71,39 @@ class ThrowableObject extends ColidableObject {
    * @returns {void}
    */
   throw() {
+    this.startThrowMovement();
+    this.startThrowAnimation();
+  }
+
+  /**
+   * Starts horizontal movement and schedules gravity application.
+   * @returns {void}
+   */
+  startThrowMovement() {
     this.throwInterval = setInterval(() => {
       if (world && world.isPaused) return;
       if (!this.isSplashing) {
         this.x += 15;
-        if (this.isFalling && !this.isInAir()) {
-          this.startSplash();
-        }
+        if (this.isFalling && !this.isInAir()) this.startSplash();
       }
     }, 1000 / 25);
     setTimeout(() => {
-      if (world && world.isPaused) return;
-      if (!this.isSplashing) {
+      if (!world?.isPaused && !this.isSplashing) {
         this.isFalling = true;
         this.applyGravity();
       }
     }, 800);
+  }
+
+  /**
+   * Starts frame rotation or splash animation loops.
+   * @returns {void}
+   */
+  startThrowAnimation() {
     this.animationInterval = setInterval(() => {
       if (world && world.isPaused) return;
-      if (this.isSplashing) {
-        this.playAnimation(this.animateSplash);
-      } else {
-        this.playAnimation(this.animateThrow);
-      }
+      const anim = this.isSplashing ? this.animateSplash : this.animateThrow;
+      this.playAnimation(anim);
     }, 25);
   }
 

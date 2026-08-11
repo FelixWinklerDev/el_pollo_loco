@@ -32,8 +32,6 @@ gameSounds.menu_music.loop = true;
 gameSounds.boss_music.loop = true;
 gameSounds.pepe_idle.loop = true;
 
-gameSounds.win_sound.volume = 0.5;
-
 document.addEventListener("DOMContentLoaded", () => {
   applyMuteState();
 });
